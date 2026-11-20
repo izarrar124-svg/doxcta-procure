@@ -2,6 +2,9 @@
 
 Reverse-engineered rebuild of [Xorora Procure](https://procure.xorora.com/dashboard), restyled with the **Doxcta** design system.
 
+- **GitHub:** https://github.com/izarrar124-svg/doxcta-procure
+- **Live:** https://doxcta-procure.vercel.app
+
 ## Layout
 
 | Path | Contents |
