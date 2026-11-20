@@ -1,0 +1,5 @@
+html{background:var(--color-bg-0);color-scheme:dark}
+body{margin:0;background:var(--color-bg-0);color:var(--text-primary);font-family:var(--font-sans)}
+::selection{background:var(--color-lime-500);color:var(--color-ink)}
+a{color:var(--color-lime-300)}
+a:hover{color:var(--color-lime-500)}

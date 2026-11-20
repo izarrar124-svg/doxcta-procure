@@ -1,0 +1,28 @@
+<!-- @dsCard group="Components" viewport="700x900" name="Marketing" subtitle="FeatureCard, ServiceCard, PricingCard, Callout, CTABlock, FAQ, Timeline, Hero" -->
+<!DOCTYPE html><html><head><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--color-bg-0)}.sec{margin-bottom:32px}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { FeatureCard, ServiceCard, PricingCard, Callout, CTABlock, FAQ, Timeline, Hero } = window.DoxctaDesignSystem_3da2d2;
+function Demo(){
+  React.useEffect(()=>{window.lucide && window.lucide.createIcons();},[]);
+  return (<div>
+    <div className="sec"><Hero description="Founders hire Doxcta when operations start running them, not the other way around." trustPoints={["Managed, not hourly","Documented SOPs"]}/></div>
+    <div className="sec" style={{display:"grid",gap:16,gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))"}}>
+      <FeatureCard icon={<i data-lucide="shield"/>} title="reliable coverage" description="Backup support and quality standards." index={0}/>
+      <ServiceCard slug="calendar-management" title="Calendar Management" shortDescription="A calendar that works for you, not against you." icon={<i data-lucide="calendar"/>} index={1}/>
+      <PricingCard name="Growth" description="Expanded support for growing teams." price={null} priceNote="Most teams start here" idealFor="Founders with growing admin needs" features={["Executive assistance","Meeting coordination","CRM administration"]} highlighted index={1}/>
+    </div>
+    <div className="sec"><Callout variant="green">Your time should go to decisions that move the business.</Callout></div>
+    <div className="sec"><CTABlock variant="dark" eyebrow="Ready to start" title="30 minutes. no pitch deck. just clarity." description="Tell us what's eating your time."/></div>
+    <div className="sec" style={{maxWidth:500}}><Timeline steps={[{title:"Discovery call",description:"30 min, no pitch deck."},{title:"Workflow audit",description:"We map what to delegate first."},{title:"Onboarding",description:"SOPs and access configured."}]}/></div>
+    <div className="sec"><FAQ title="common questions" items={[{question:"Do you charge by the hour?",answer:"No — tiered packages."}]}/></div>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

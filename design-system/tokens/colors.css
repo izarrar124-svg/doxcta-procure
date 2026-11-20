@@ -1,0 +1,31 @@
+:root{
+/* Core surfaces — dark-first */
+--color-bg-0:#07110d;--color-bg-1:#0d1b16;--color-bg-2:#142a22;--color-bg-3:#1b382c;
+--color-line:rgba(243,241,234,0.08);--color-line-strong:rgba(243,241,234,0.18);
+/* Text on dark */
+--color-bone:#f3f1ea;--color-bone-muted:#9fb0a7;--color-bone-faint:#6c7d73;
+/* Accent — acid lime */
+--color-lime-100:#eaffc7;--color-lime-300:#d4ff6a;--color-lime-500:#b8ff3d;--color-lime-600:#9fe62a;--color-lime-700:#7fbf1c;
+--color-ink:#07110d;
+/* Legacy brand green — kept as a secondary/heritage accent, not primary */
+--color-green-500:#8bbe47;--color-green-700:#5a7d2e;
+/* Semantic */
+--color-success:#6bffa0;--color-warning:#ffb84d;--color-danger:#ff6b57;--color-info:#6bd4ff;
+/* Aliases used by components */
+--surface-page:var(--color-bg-0);
+--surface-card:var(--color-bg-1);
+--surface-card-hover:var(--color-bg-2);
+--surface-paper:var(--color-bone);
+--surface-mint:var(--color-bg-1);
+--border-default:var(--color-line);
+--border-strong:var(--color-line-strong);
+--border-hover:var(--color-lime-500);
+--text-primary:var(--color-bone);
+--text-muted:var(--color-bone-muted);
+--text-on-paper:var(--color-bg-0);
+--text-on-paper-muted:#4a544d;
+--accent:var(--color-lime-500);
+--accent-hover:var(--color-lime-600);
+--accent-ink:var(--color-ink);
+--focus-ring:var(--color-lime-500);
+}

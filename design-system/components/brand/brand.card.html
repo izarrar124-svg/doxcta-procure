@@ -1,0 +1,22 @@
+<!-- @dsCard group="Components" viewport="700x180" name="Brand Motifs" subtitle="Dot, diamond, dashed trail, accent blob" -->
+<!DOCTYPE html><html><head><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--color-bg-0)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { BrandDot, BrandDiamond, DashedTrail, AccentBlob } = window.DoxctaDesignSystem_3da2d2;
+function Demo(){
+  return (<div style={{display:"flex",alignItems:"center",gap:32,position:"relative"}}>
+    <div style={{position:"relative",width:80,height:80,border:"1px dashed var(--border-strong)",borderRadius:16,display:"flex",alignItems:"center",justifyContent:"center"}}><AccentBlob style={{top:-20,left:-20,width:100,height:100}}/><span style={{position:"relative",fontSize:12,color:"var(--text-muted)"}}>blob</span></div>
+    <div style={{display:"flex",flexDirection:"column",gap:16,alignItems:"flex-start"}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,color:"var(--text-primary)"}}><BrandDot/><span>Dot</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:8,color:"var(--text-primary)"}}><BrandDiamond/><span>Diamond</span></div>
+    </div>
+    <DashedTrail/>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

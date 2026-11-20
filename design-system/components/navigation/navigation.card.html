@@ -1,0 +1,23 @@
+<!-- @dsCard group="Components" viewport="900x760" name="Navigation" subtitle="Dark glass Navbar, atmosphere Footer" -->
+<!DOCTYPE html><html><head><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--color-bg-0)}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Navbar, Footer } = window.DoxctaDesignSystem_3da2d2;
+const links = [{label:"Services",href:"/services"},{label:"Pricing",href:"/pricing"},{label:"Contact",href:"/contact"}];
+function Demo(){
+  return (<div>
+    <Navbar links={links} activeHref="/services" />
+    <Footer columns={[
+      {title:"Services",links:[{label:"Executive Inbox",href:"/services/executive-inbox-management"},{label:"Calendar Management",href:"/services/calendar-management"},{label:"Executive Assistance",href:"/services/executive-assistance"}]},
+      {title:"Industries",links:[{label:"Startup Founders",href:"/industries/startup-founders"},{label:"Consultants",href:"/industries/consultants"},{label:"SaaS",href:"/industries/saas"}]},
+      {title:"Company",links:[{label:"About",href:"/about"},{label:"Pricing",href:"/pricing"},{label:"Contact",href:"/contact"}]}
+    ]} legalLinks={[{label:"Privacy Policy",href:"/privacy"},{label:"Terms of Service",href:"/terms"}]}/>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

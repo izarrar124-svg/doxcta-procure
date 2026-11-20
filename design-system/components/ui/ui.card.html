@@ -1,0 +1,21 @@
+<!-- @dsCard group="Components" viewport="700x480" name="Form & Interactive" subtitle="Button, Input, Textarea, Label, Accordion" -->
+<!DOCTYPE html><html><head><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--color-bg-0)}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Button, Input, Textarea, Label, Accordion } = window.DoxctaDesignSystem_3da2d2;
+function Demo(){
+  return (<div>
+    <div className="row"><Button variant="primary">Primary</Button><Button variant="secondary">Secondary</Button><Button variant="ghost">Ghost</Button><Button variant="link">Link</Button><Button disabled>Disabled</Button></div>
+    <div className="row"><Button size="sm">Small</Button><Button size="md">Medium</Button><Button size="lg">Large</Button><Button size="xl">XL</Button></div>
+    <div className="row" style={{maxWidth:320}}><div style={{width:"100%"}}><Label htmlFor="e">Email</Label><Input id="e" placeholder="you@company.com"/></div></div>
+    <div className="row" style={{maxWidth:320}}><div style={{width:"100%"}}><Label htmlFor="m">Message</Label><Textarea id="m" rows={3} placeholder="Tell us what's eating your time."/></div></div>
+    <div style={{maxWidth:500}}><Accordion items={[{question:"Do you charge by the hour?",answer:"No. We sell outcomes through tiered packages."},{question:"Is there a contract?",answer:"Month-to-month after an initial onboarding period."}]}/></div>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

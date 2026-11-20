@@ -1,0 +1,28 @@
+# Dependencies & builds
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Archives (source already extracted)
+*.zip
+
+# Large REA toolkit clone (optional reference; keep zip out too)
+tools/rea/
+
+# Logs / OS / editors
+logs/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Vite
+.vite/

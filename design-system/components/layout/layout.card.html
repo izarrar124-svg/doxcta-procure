@@ -1,0 +1,26 @@
+<!-- @dsCard group="Components" viewport="700x520" name="Layout & Typography" subtitle="Container, Grid, Section, Heading, Text, Eyebrow, Badge, IconWrapper, Mono, Logo" -->
+<!DOCTYPE html><html><head><link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--color-bg-0)}.row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}</style>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const { Heading, Text, Eyebrow, Badge, IconWrapper, Mono, Logo, Container, Grid } = window.DoxctaDesignSystem_3da2d2;
+function Demo(){
+  React.useEffect(()=>{window.lucide && window.lucide.createIcons();},[]);
+  return (<div>
+    <div className="row"><Heading as="h1" size="display">display</Heading></div>
+    <div className="row"><Heading as="h1" size="h1">heading one</Heading></div>
+    <div className="row"><Heading as="h2" size="h2">heading two</Heading><Heading as="h3" size="h3">heading three</Heading></div>
+    <div className="row"><Text size="large">Large body text for lead paragraphs.</Text></div>
+    <div className="row"><Text muted>Body copy, muted, for supporting detail.</Text></div>
+    <div className="row"><Eyebrow>The problem</Eyebrow><Badge>Default</Badge><Badge variant="green">Most popular</Badge><Badge variant="outline">Outline</Badge></div>
+    <div className="row"><IconWrapper variant="green" size="lg"><i data-lucide="mail"/></IconWrapper><IconWrapper variant="default" size="md"><i data-lucide="calendar"/></IconWrapper><Mono>Executive operations partner</Mono></div>
+    <div className="row"><Logo size="md"/></div>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>
