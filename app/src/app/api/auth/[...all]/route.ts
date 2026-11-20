@@ -1,4 +1,11 @@
 import { getAuth } from '@/server/auth'
 import { toNextJsHandler } from 'better-auth/next-js'
 
-export const { GET, POST } = toNextJsHandler(getAuth())
+type Handler = (req: Request) => Promise<Response> | Response
+
+function handlers() {
+  return toNextJsHandler(getAuth())
+}
+
+export const GET: Handler = (req) => handlers().GET(req)
+export const POST: Handler = (req) => handlers().POST(req)
