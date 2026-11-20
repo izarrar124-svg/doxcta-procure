@@ -1,33 +1,50 @@
 # Doxcta Procure
 
-Reverse-engineered rebuild of [Xorora Procure](https://procure.xorora.com/dashboard), restyled with the **Doxcta** design system.
+Multi-tenant SaaS foundation for expense & procurement operations (Phase 1–4), with Doxcta branding.
 
 - **GitHub:** https://github.com/izarrar124-svg/doxcta-procure
 - **Live:** https://doxcta-procure.vercel.app
 
-## Layout
+## Stack
 
-| Path | Contents |
-|---|---|
-| `app/` | Vite + React + TypeScript rebuild |
-| `design-system/` | Extracted Doxcta design system |
-| `tools/rea/` | Reverse Engineer Anything toolkit (reference) |
-| `docs/procure-live-capture-2026-11-21.md` | Full live capture report |
-| `docs/product-map.md` | Condensed IA + routes |
-| `docs/rebuild-spec.md` | Rebuild contracts and screen map |
-| `docs/parity-gaps.md` | Known differences vs live |
-| `docs/screen-gallery/` | Capture screenshots (`01`–`17`) |
+- Next.js 15 App Router
+- Neon PostgreSQL + Drizzle ORM
+- Better Auth (email/password)
+- Tailwind 4 + Doxcta design tokens
 
-## Run the app
+## Quick start
 
 ```bash
 cd app
+cp .env.example .env.local
+# set DATABASE_URL, BETTER_AUTH_SECRET, BETTER_AUTH_URL, NEXT_PUBLIC_APP_URL
 npm install
+npm run db:push
+npm run db:seed
 npm run dev
 ```
 
-Open http://127.0.0.1:5173 — sign in with any work email (mock auth).
+Open http://localhost:3000
 
-## Capture notes
+## Docs
 
-Primary capture used the Cursor browser against the live authenticated session. Confirmed API host: `xorora-procure-api.vercel.app/api/v1`. Authenticated response bodies were not retained.
+| Doc | Contents |
+|---|---|
+| [docs/AUDIT.md](docs/AUDIT.md) | Pre-migration audit |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design |
+| [docs/DATABASE.md](docs/DATABASE.md) | Schema & migrations |
+| [docs/SECURITY.md](docs/SECURITY.md) | Security notes |
+| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Vercel + Neon deploy |
+
+## What’s in Phase 1–4
+
+- Company self-registration + Super Admin provisioning
+- Login / logout / password reset hooks
+- Employee invitations + membership activate/disable
+- Departments, roles/permissions, company settings
+- Company switcher, audit + notification writes
+- Super Admin tenant/subscription controls
+
+## Deferred (later phases)
+
+Expense/PO engines, budgets, full marketing site, payments, lead CRM.
