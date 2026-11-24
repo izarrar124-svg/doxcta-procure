@@ -106,14 +106,14 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
         <div className="panel" style={{ marginBottom: 18 }}>
           <div className="panel-body">
             <p>
-              <strong>Email:</strong> {vendor.email || '—'}
+              <strong>Email:</strong> {vendor.email || '-'}
             </p>
             <p>
-              <strong>Terms:</strong> {vendor.paymentTerms || '—'}
+              <strong>Terms:</strong> {vendor.paymentTerms || '-'}
             </p>
             {canBank ? (
               <p>
-                <strong>Bank:</strong> {vendor.bankName || '—'} / {vendor.bankAccountNumber || '—'}
+                <strong>Bank:</strong> {vendor.bankName || '-'} / {vendor.bankAccountNumber || '-'}
               </p>
             ) : (
               <p className="muted">Bank details restricted.</p>
@@ -134,7 +134,7 @@ export default async function VendorDetailPage({ params }: { params: Promise<{ i
               {history.map((inv) => (
                 <li key={inv.id}>
                   <Link href={`/invoices/${inv.id}`}>
-                    {inv.invoiceNumber || inv.id.slice(0, 8)} — {inv.currency}{' '}
+                    {inv.invoiceNumber || inv.id.slice(0, 8)} · {inv.currency}{' '}
                     {Number(inv.totalAmount).toFixed(2)} ({inv.paymentStatus})
                   </Link>
                 </li>

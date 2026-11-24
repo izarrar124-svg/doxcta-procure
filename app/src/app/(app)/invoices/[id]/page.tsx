@@ -58,10 +58,10 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             <strong>Outstanding:</strong> {Number(data.invoice.outstandingBalance).toFixed(2)}
           </div>
           <div>
-            <strong>Due:</strong> {data.invoice.dueDate?.toISOString().slice(0, 10) || '—'}
+            <strong>Due:</strong> {data.invoice.dueDate?.toISOString().slice(0, 10) || '-'}
           </div>
           <div>
-            <strong>Terms:</strong> {data.invoice.paymentTerms || '—'}
+            <strong>Terms:</strong> {data.invoice.paymentTerms || '-'}
           </div>
           {data.invoice.validationWarnings ? (
             <div>
@@ -91,7 +91,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             <ul>
               {data.items.map((item) => (
                 <li key={item.id}>
-                  {item.description} — qty {item.quantity} × {item.unitPrice} = {item.lineTotal}
+                  {item.description}: qty {item.quantity} × {item.unitPrice} = {item.lineTotal}
                 </li>
               ))}
             </ul>
@@ -159,7 +159,7 @@ export default async function InvoiceDetailPage({ params }: { params: Promise<{ 
             <ul>
               {payments.map((p) => (
                 <li key={p.id}>
-                  {p.paymentDate.toISOString().slice(0, 10)} — {p.currency} {Number(p.amount).toFixed(2)}{' '}
+                  {p.paymentDate.toISOString().slice(0, 10)} · {p.currency} {Number(p.amount).toFixed(2)}{' '}
                   {p.reference ? `(${p.reference})` : ''}
                 </li>
               ))}

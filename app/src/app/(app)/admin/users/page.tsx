@@ -92,7 +92,7 @@ export default async function EmployeesPage() {
               <tr key={row.membershipId}>
                 <td>{row.name}</td>
                 <td>{row.email}</td>
-                <td>{row.designation || '—'}</td>
+                <td>{row.designation || '-'}</td>
                 <td>{row.status}</td>
                 <td>
                   {row.status === 'active' ? (

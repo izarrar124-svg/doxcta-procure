@@ -130,7 +130,7 @@ async function notifyApprovers(
     })
     await sendEmail({
       to: r.email,
-      subject: 'Doxcta AI — Approval requested',
+      subject: 'Doxcta AI: Approval requested',
       html: `<p>Hi ${r.name},</p><p>${title} requires approval at step <strong>${step.name}</strong>.</p>`,
     })
   }

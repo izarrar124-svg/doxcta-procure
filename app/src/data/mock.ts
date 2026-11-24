@@ -262,7 +262,7 @@ export const requests: PurchaseRequest[] = [
   {
     id: 'r6',
     number: 'PR-OPS-0011',
-    title: 'Courier retainer — Nov',
+    title: 'Courier retainer, Nov',
     category: 'Operations Spend',
     department: 'Operations',
     vendor: 'TCS',
@@ -498,7 +498,7 @@ export const vendors: Vendor[] = [
     name: 'Anthropic',
     category: 'Software',
     email: 'billing@anthropic.com',
-    phone: '—',
+    phone: '-',
     status: 'Active',
   },
   {
@@ -506,7 +506,7 @@ export const vendors: Vendor[] = [
     name: 'JetBrains',
     category: 'Software',
     email: 'sales@jetbrains.com',
-    phone: '—',
+    phone: '-',
     status: 'Active',
   },
   {
@@ -514,7 +514,7 @@ export const vendors: Vendor[] = [
     name: 'Helium 10',
     category: 'Software',
     email: 'support@helium10.com',
-    phone: '—',
+    phone: '-',
     status: 'Active',
   },
   {
@@ -573,7 +573,7 @@ export const notifications: NotificationItem[] = [
   {
     id: 'n3',
     title: 'Spend recorded',
-    body: 'PR-ENG-0009 marked completed — PKR 49,823.',
+    body: 'PR-ENG-0009 marked completed: PKR 49,823.',
     createdAt: '2026-11-18T15:20:00Z',
     read: true,
   },

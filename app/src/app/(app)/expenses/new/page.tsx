@@ -45,7 +45,7 @@ export default async function NewExpensePage() {
           <div className="auth-field">
             <Label htmlFor="vendorId">Vendor</Label>
             <select id="vendorId" name="vendorId" className="dx-input">
-              <option value="">—</option>
+              <option value="">-</option>
               {options.vendors.map((v) => (
                 <option key={v.id} value={v.id}>
                   {v.name}
@@ -56,7 +56,7 @@ export default async function NewExpensePage() {
           <div className="auth-field">
             <Label htmlFor="categoryId">Category</Label>
             <select id="categoryId" name="categoryId" className="dx-input">
-              <option value="">—</option>
+              <option value="">-</option>
               {options.categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -67,7 +67,7 @@ export default async function NewExpensePage() {
           <div className="auth-field">
             <Label htmlFor="departmentId">Department</Label>
             <select id="departmentId" name="departmentId" className="dx-input">
-              <option value="">—</option>
+              <option value="">-</option>
               {options.departments.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.name}

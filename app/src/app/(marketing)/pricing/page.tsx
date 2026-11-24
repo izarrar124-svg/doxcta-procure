@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/Button'
 
 export const metadata = {
   title: 'Pricing',
-  description: 'Doxcta AI monthly plans — Starter, Professional, and Business.',
+  description: 'Doxcta AI monthly plans: Starter, Professional, and Business.',
 }
 
 export default function PricingPage() {

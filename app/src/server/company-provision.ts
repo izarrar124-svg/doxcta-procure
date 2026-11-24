@@ -46,7 +46,7 @@ export async function ensureSubscriptionPlans() {
     {
       key: 'starter',
       name: 'Starter',
-      description: 'Small businesses — expense tracking and AI invoice extraction.',
+      description: 'Small businesses: expense tracking and AI invoice extraction.',
       monthlyPrice: '29',
       annualPrice: '290',
       employeeLimit: 3,
@@ -63,7 +63,7 @@ export async function ensureSubscriptionPlans() {
     {
       key: 'professional',
       name: 'Professional',
-      description: 'Growing companies — advanced approvals and full AI assistant.',
+      description: 'Growing companies: advanced approvals and full AI assistant.',
       monthlyPrice: '79',
       annualPrice: '790',
       employeeLimit: 15,
@@ -80,7 +80,7 @@ export async function ensureSubscriptionPlans() {
     {
       key: 'business',
       name: 'Business',
-      description: 'Established SMEs — higher limits and advanced reporting.',
+      description: 'Established SMEs: higher limits and advanced reporting.',
       monthlyPrice: '149',
       annualPrice: '1490',
       employeeLimit: 50,

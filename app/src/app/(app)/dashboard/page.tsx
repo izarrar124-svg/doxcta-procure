@@ -48,7 +48,7 @@ export default async function DashboardPage({
       <div className="app-page-header">
         <div>
           <h1>Overview</h1>
-          <p>{company.name} — financial operations at a glance.</p>
+          <p>{company.name}: financial operations at a glance.</p>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {['week', 'month', 'quarter', 'year'].map((r) => (
@@ -75,7 +75,7 @@ export default async function DashboardPage({
                   Number(metrics.monthly[metrics.monthly.length - 1].total) -
                   Number(metrics.monthly[metrics.monthly.length - 2].total)
                 ).toFixed(2)
-              : '—'
+              : '-'
           }
         />
       </div>

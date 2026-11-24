@@ -63,7 +63,7 @@ export function AssistantChat() {
             ) : null}
           </div>
         ) : (
-          <p className="muted">Answers use verified organization-scoped calculations — never invented figures.</p>
+          <p className="muted">Answers use verified organization-scoped calculations, never invented figures.</p>
         )}
       </div>
     </div>

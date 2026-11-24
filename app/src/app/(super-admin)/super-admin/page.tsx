@@ -144,7 +144,7 @@ export default async function SuperAdminPage() {
                   <td>{c.businessEmail}</td>
                   <td>{c.status}</td>
                   <td>
-                    {plan?.name ?? '—'} / {sub?.status ?? '—'}
+                    {plan?.name ?? '-'} / {sub?.status ?? '-'}
                   </td>
                   <td>
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

@@ -6,7 +6,7 @@ import { ProductFrame } from '@/components/marketing/ProductFrame'
 import { PricingGrid } from '@/components/marketing/PricingGrid'
 
 export const metadata: Metadata = {
-  title: 'Doxcta AI — Expenses and invoices for growing teams',
+  title: 'Doxcta AI: Expenses and invoices for growing teams',
   description:
     'Stop retyping invoices. Record expenses, run approvals, and see what the company actually spent.',
 }
@@ -23,7 +23,7 @@ export default function HomePage() {
             </h1>
             <p className="mkt-hero-lead">
               Upload the PDF. Check the fields. Send it for approval. See what each department spent
-              this month — without another spreadsheet.
+              this month, without another spreadsheet.
             </p>
             <div className="mkt-cta-row">
               <Link href="/register">
@@ -82,7 +82,7 @@ export default function HomePage() {
       <section className="mkt-section" id="product">
         <div className="mkt-container">
           <div className="mkt-eyebrow">What you get</div>
-          <h2>the boring parts of finance ops — done properly.</h2>
+          <h2>the boring parts of finance ops, done properly.</h2>
           <p className="mkt-section-lead">
             Doxcta is for recording expenses, reading invoices, approving them, and tracking what is
             still unpaid. AI helps with the typing. It does not invent your numbers.
@@ -106,7 +106,7 @@ export default function HomePage() {
               <h2 style={{ fontSize: '1.8rem' }}>approvals that match how you already work.</h2>
               <p className="mkt-section-lead">
                 Department head first. Finance next. CEO when the amount warrants it. Approve,
-                reject, or send it back with a note — and keep the trail.
+                reject, or send it back with a note, and keep the trail.
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function HomePage() {
               <h2 style={{ fontSize: '1.8rem' }}>know what you still owe.</h2>
               <p className="mkt-section-lead">
                 Log a payment when money goes out. Partial payments are fine. The outstanding
-                balance is calculated for you — not typed into a second sheet.
+                balance is calculated for you, not typed into a second sheet.
               </p>
             </div>
             <ProductFrame variant="payments" caption="workspace / payments" />
@@ -195,7 +195,7 @@ export default function HomePage() {
             <article className="mkt-card">
               <h3>Employees</h3>
               <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>
-                Submit an expense. Attach a receipt. See where it sits in approval — not the whole
+                Submit an expense. Attach a receipt. See where it sits in approval, not the whole
                 company ledger.
               </p>
             </article>
@@ -243,7 +243,7 @@ export default function HomePage() {
               <li>Permissions decide who views expenses, invoices, payments, and bank fields.</li>
               <li>Creates, approvals, and payment changes are written to an audit log.</li>
               <li>
-                Ask the assistant “how much did we spend this month?” — answers come from your
+                Ask the assistant “how much did we spend this month?” Answers come from your
                 records, not made-up totals.
               </li>
             </ul>

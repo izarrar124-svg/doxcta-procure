@@ -174,7 +174,7 @@ export async function acceptInvitationAction(formData: FormData) {
     })
     userId = signed.user.id
   } catch {
-    // User may already exist — sign in instead
+    // User may already exist; sign in instead
     const signedIn = await auth.api.signInEmail({
       body: { email, password },
       headers: await headers(),

@@ -28,7 +28,7 @@ export async function getApprovalEntityLabel(entityType: string, entityId: strin
   const db = getDb()
   if (entityType === 'expense') {
     const [e] = await db.select().from(expenses).where(eq(expenses.id, entityId)).limit(1)
-    return e ? `${e.reference} — ${e.title}` : entityId
+    return e ? `${e.reference}: ${e.title}` : entityId
   }
   if (entityType === 'invoice') {
     const [i] = await db.select().from(invoices).where(eq(invoices.id, entityId)).limit(1)

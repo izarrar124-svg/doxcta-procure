@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 /**
  * Official Doxcta lockup: live mark (chevron) + live wordmark ("doxcta.")
- * composed together — the full logo, not the header's wordmark-only crop.
+ * composed together: the full logo, not the header's wordmark-only crop.
  */
 export function DoxctaLogo({
   href = '/',

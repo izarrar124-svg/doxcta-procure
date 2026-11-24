@@ -104,7 +104,7 @@ export default async function InvoiceReviewPage({ params }: { params: Promise<{ 
                 className="dx-input"
                 defaultValue={data.invoice.vendorId ?? ''}
               >
-                <option value="">—</option>
+                <option value="">-</option>
                 {options.vendors.map((v) => (
                   <option key={v.id} value={v.id}>
                     {v.name}
@@ -139,7 +139,7 @@ export default async function InvoiceReviewPage({ params }: { params: Promise<{ 
             <div className="auth-field">
               <Label htmlFor="categoryId">Suggested category</Label>
               <select id="categoryId" name="categoryId" className="dx-input" defaultValue={data.invoice.categoryId ?? ''}>
-                <option value="">—</option>
+                <option value="">-</option>
                 {options.categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}

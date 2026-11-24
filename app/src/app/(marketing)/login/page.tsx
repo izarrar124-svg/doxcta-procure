@@ -22,14 +22,23 @@ function LoginForm() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const { error: err } = await authClient.signIn.email({ email, password })
-    setLoading(false)
-    if (err) {
-      setError(err.message || 'Sign in failed')
-      return
+    try {
+      const { error: err } = await authClient.signIn.email({ email, password })
+      if (err) {
+        setError(err.message || 'Sign in failed')
+        return
+      }
+      router.push(params.get('next') || '/dashboard')
+      router.refresh()
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Sign in failed. Check that the database and auth env vars are configured.'
+      setError(message)
+    } finally {
+      setLoading(false)
     }
-    router.push(params.get('next') || '/dashboard')
-    router.refresh()
   }
 
   return (

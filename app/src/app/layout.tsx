@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: '%s | Doxcta AI',
   },
   description:
-    'Record expenses, upload invoices, run approvals, and track what is still unpaid — for growing teams.',
+    'Record expenses, upload invoices, run approvals, and track what is still unpaid, for growing teams.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

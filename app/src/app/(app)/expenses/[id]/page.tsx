@@ -47,7 +47,7 @@ export default async function ExpenseDetailPage({ params }: { params: Promise<{ 
       <div className="panel">
         <div className="panel-body" style={{ display: 'grid', gap: 8 }}>
           <div>
-            <strong>Vendor:</strong> {row.vendorName || '—'}
+            <strong>Vendor:</strong> {row.vendorName || '-'}
           </div>
           <div>
             <strong>Date:</strong> {row.expense.transactionDate.toISOString().slice(0, 10)}
@@ -60,7 +60,7 @@ export default async function ExpenseDetailPage({ params }: { params: Promise<{ 
             {Number(row.expense.reportingAmount).toFixed(2)} @ {row.expense.exchangeRate}
           </div>
           <div>
-            <strong>Description:</strong> {row.expense.description || '—'}
+            <strong>Description:</strong> {row.expense.description || '-'}
           </div>
           {['draft', 'rejected'].includes(row.expense.status) ? (
             <form action={submitExpenseAction}>

@@ -49,9 +49,9 @@ export default async function VendorsPage() {
                 rows.map((v) => (
                   <tr key={v.id}>
                     <td>{v.name}</td>
-                    <td>{v.country || '—'}</td>
+                    <td>{v.country || '-'}</td>
                     <td>{v.defaultCurrency}</td>
-                    <td>{v.paymentTerms || '—'}</td>
+                    <td>{v.paymentTerms || '-'}</td>
                     <td>{v.active ? 'Active' : 'Inactive'}</td>
                     <td>
                       <Link href={`/vendors/${v.id}`}>View</Link>

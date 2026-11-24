@@ -42,9 +42,9 @@ export default async function SettingsPage() {
           <div className="auth-field">
             <Label htmlFor="currency">Reporting currency</Label>
             <select id="currency" name="currency" className="dx-input" defaultValue={settings?.currency ?? 'USD'}>
-              <option value="USD">USD — US Dollar</option>
-              <option value="GBP">GBP — British Pound</option>
-              <option value="AED">AED — UAE Dirham</option>
+              <option value="USD">USD (US Dollar)</option>
+              <option value="GBP">GBP (British Pound)</option>
+              <option value="AED">AED (UAE Dirham)</option>
             </select>
           </div>
           <div className="auth-field">

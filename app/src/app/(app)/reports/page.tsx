@@ -100,9 +100,9 @@ export default async function ReportsPage() {
           <div className="panel-body">
             <ul>
               <li>Current: {aging.current.toFixed(2)}</li>
-              <li>1–30 days: {aging.d1_30.toFixed(2)}</li>
-              <li>31–60 days: {aging.d31_60.toFixed(2)}</li>
-              <li>61–90 days: {aging.d61_90.toFixed(2)}</li>
+              <li>1-30 days: {aging.d1_30.toFixed(2)}</li>
+              <li>31-60 days: {aging.d31_60.toFixed(2)}</li>
+              <li>61-90 days: {aging.d61_90.toFixed(2)}</li>
               <li>90+ days: {aging.d90p.toFixed(2)}</li>
             </ul>
           </div>

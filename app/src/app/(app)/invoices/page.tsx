@@ -61,9 +61,9 @@ export default async function InvoicesPage() {
                 rows.map((r) => (
                   <tr key={r.invoice.id}>
                     <td>{r.invoice.invoiceNumber || r.invoice.id.slice(0, 8)}</td>
-                    <td>{r.vendorName || '—'}</td>
-                    <td>{r.invoice.invoiceDate?.toISOString().slice(0, 10) || '—'}</td>
-                    <td>{r.invoice.dueDate?.toISOString().slice(0, 10) || '—'}</td>
+                    <td>{r.vendorName || '-'}</td>
+                    <td>{r.invoice.invoiceDate?.toISOString().slice(0, 10) || '-'}</td>
+                    <td>{r.invoice.dueDate?.toISOString().slice(0, 10) || '-'}</td>
                     <td>
                       {r.invoice.currency} {Number(r.invoice.totalAmount).toFixed(2)}
                     </td>

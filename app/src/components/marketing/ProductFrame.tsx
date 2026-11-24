@@ -160,8 +160,8 @@ function renderMain(variant: Variant) {
         </div>
         <div className="mkt-bars">
           <Bar label="Current" pct={42} value="$20k" />
-          <Bar label="1–30" pct={28} value="$13k" />
-          <Bar label="31–60" pct={18} value="$9k" />
+          <Bar label="1-30" pct={28} value="$13k" />
+          <Bar label="31-60" pct={18} value="$9k" />
           <Bar label="90+" pct={12} value="$6k" />
         </div>
       </>

@@ -10,7 +10,7 @@ export function SiteFooter() {
             <DoxctaLogo size="sm" />
           </div>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: 280 }}>
-            Expenses, invoices, approvals, and payments — in one workspace for your team.
+            Expenses, invoices, approvals, and payments in one workspace for your team.
           </p>
         </div>
         <div>

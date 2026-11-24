@@ -66,9 +66,9 @@ export default async function ExpensesPage() {
                   <tr key={r.expense.id}>
                     <td>{r.expense.reference}</td>
                     <td>{r.expense.title}</td>
-                    <td>{r.vendorName || '—'}</td>
-                    <td>{r.departmentName || '—'}</td>
-                    <td>{r.categoryName || '—'}</td>
+                    <td>{r.vendorName || '-'}</td>
+                    <td>{r.departmentName || '-'}</td>
+                    <td>{r.categoryName || '-'}</td>
                     <td>{r.expense.transactionDate.toISOString().slice(0, 10)}</td>
                     <td>
                       {r.expense.currency} {Number(r.expense.totalAmount).toFixed(2)}

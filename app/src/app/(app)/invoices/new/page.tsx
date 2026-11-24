@@ -38,7 +38,7 @@ export default async function NewInvoicePage() {
           <div className="auth-field">
             <Label htmlFor="vendorId">Vendor</Label>
             <select id="vendorId" name="vendorId" className="dx-input">
-              <option value="">—</option>
+              <option value="">-</option>
               {options.vendors.map((v) => (
                 <option key={v.id} value={v.id}>
                   {v.name}
@@ -81,7 +81,7 @@ export default async function NewInvoicePage() {
           <div className="auth-field">
             <Label htmlFor="categoryId">Category</Label>
             <select id="categoryId" name="categoryId" className="dx-input">
-              <option value="">—</option>
+              <option value="">-</option>
               {options.categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}

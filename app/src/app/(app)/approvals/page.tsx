@@ -55,7 +55,7 @@ export default async function ApprovalsPage() {
                   <strong>{r.label}</strong>
                   <div className="muted">
                     {r.approval.entityType} · step {r.approval.currentStepOrder} · requester{' '}
-                    {r.requesterName || '—'} ·{' '}
+                    {r.requesterName || '-'} ·{' '}
                     {r.approval.currency} {Number(r.approval.amount || 0).toFixed(2)}
                   </div>
                   <div className="muted">

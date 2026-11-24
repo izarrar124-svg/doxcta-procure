@@ -55,8 +55,8 @@ export default async function PaymentsPage() {
                 open.map((r) => (
                   <tr key={r.invoice.id}>
                     <td>{r.invoice.invoiceNumber || r.invoice.id.slice(0, 8)}</td>
-                    <td>{r.vendorName || '—'}</td>
-                    <td>{r.invoice.dueDate?.toISOString().slice(0, 10) || '—'}</td>
+                    <td>{r.vendorName || '-'}</td>
+                    <td>{r.invoice.dueDate?.toISOString().slice(0, 10) || '-'}</td>
                     <td>
                       {r.invoice.currency} {Number(r.invoice.outstandingBalance).toFixed(2)}
                     </td>
@@ -100,12 +100,12 @@ export default async function PaymentsPage() {
                 payments.map((p) => (
                   <tr key={p.payment.id}>
                     <td>{p.payment.paymentDate.toISOString().slice(0, 10)}</td>
-                    <td>{p.invoiceNumber || '—'}</td>
-                    <td>{p.vendorName || '—'}</td>
+                    <td>{p.invoiceNumber || '-'}</td>
+                    <td>{p.vendorName || '-'}</td>
                     <td>
                       {p.payment.currency} {Number(p.payment.amount).toFixed(2)}
                     </td>
-                    <td>{p.payment.reference || '—'}</td>
+                    <td>{p.payment.reference || '-'}</td>
                   </tr>
                 ))
               )}

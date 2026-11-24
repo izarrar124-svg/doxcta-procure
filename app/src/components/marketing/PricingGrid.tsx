@@ -24,7 +24,7 @@ const PLANS = [
   {
     name: 'Business',
     price: '149',
-    blurb: 'Higher volume, more departments, same product — fewer limits.',
+    blurb: 'Higher volume, more departments, same product, fewer limits.',
     features: [
       '50 users',
       '2,000 invoices / month',

@@ -17,12 +17,16 @@ export default function ForgotPasswordPage() {
     e.preventDefault()
     setError('')
     setMessage('')
-    const { error: err } = await authClient.requestPasswordReset({
-      email,
-      redirectTo: '/reset-password',
-    })
-    if (err) setError(err.message || 'Request failed')
-    else setMessage('If that email exists, a reset link has been sent (or logged in development).')
+    try {
+      const { error: err } = await authClient.requestPasswordReset({
+        email,
+        redirectTo: '/reset-password',
+      })
+      if (err) setError(err.message || 'Request failed')
+      else setMessage('If that email exists, a reset link has been sent (or logged in development).')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Request failed')
+    }
   }
 
   return (

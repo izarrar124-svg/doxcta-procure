@@ -17,12 +17,16 @@ function ResetForm() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault()
-    const { error: err } = await authClient.resetPassword({ newPassword: password, token })
-    if (err) {
-      setError(err.message || 'Reset failed')
-      return
+    try {
+      const { error: err } = await authClient.resetPassword({ newPassword: password, token })
+      if (err) {
+        setError(err.message || 'Reset failed')
+        return
+      }
+      router.push('/login')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Reset failed')
     }
-    router.push('/login')
   }
 
   return (

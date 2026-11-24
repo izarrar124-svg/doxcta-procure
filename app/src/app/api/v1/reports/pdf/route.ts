@@ -13,7 +13,7 @@ export async function GET() {
     const metrics = await getOverviewMetrics(companyId)
     const aging = await agingReport(companyId)
     const text = [
-      'Doxcta AI — Financial Summary',
+      'Doxcta AI: Financial Summary',
       `Generated: ${new Date().toISOString()}`,
       '',
       `Total Expenses: ${metrics.totalExpenses.toFixed(2)}`,
