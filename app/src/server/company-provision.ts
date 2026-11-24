@@ -2,10 +2,13 @@ import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { getDb } from '@/server/db'
 import {
+  approvalSteps,
+  approvalWorkflows,
   companies,
   companyMemberships,
   companySettings,
   departments,
+  expenseCategories,
   membershipRoles,
   permissions,
   rolePermissions,
@@ -43,29 +46,53 @@ export async function ensureSubscriptionPlans() {
     {
       key: 'starter',
       name: 'Starter',
-      description: 'Basic expense management for small teams.',
+      description: 'Small businesses — expense tracking and AI invoice extraction.',
       monthlyPrice: '29',
       annualPrice: '290',
-      employeeLimit: 10,
-      featuresJson: JSON.stringify(['expenses', 'basic_reporting']),
-    },
-    {
-      key: 'business',
-      name: 'Business',
-      description: 'Expense + procurement with approvals and budgets.',
-      monthlyPrice: '79',
-      annualPrice: '790',
-      employeeLimit: 50,
-      featuresJson: JSON.stringify(['expenses', 'procurement', 'approvals', 'budgets']),
+      employeeLimit: 3,
+      featuresJson: JSON.stringify({
+        users: 3,
+        invoicesPerMonth: 100,
+        aiExtraction: true,
+        aiAssistant: 'basic',
+        approvals: 'basic',
+        reports: 'basic',
+        departments: 1,
+      }),
     },
     {
       key: 'professional',
       name: 'Professional',
-      description: 'Advanced reporting and custom workflows.',
+      description: 'Growing companies — advanced approvals and full AI assistant.',
+      monthlyPrice: '79',
+      annualPrice: '790',
+      employeeLimit: 15,
+      featuresJson: JSON.stringify({
+        users: 15,
+        invoicesPerMonth: 500,
+        aiExtraction: true,
+        aiAssistant: 'full',
+        approvals: 'advanced',
+        reports: 'advanced',
+        departments: 10,
+      }),
+    },
+    {
+      key: 'business',
+      name: 'Business',
+      description: 'Established SMEs — higher limits and advanced reporting.',
       monthlyPrice: '149',
       annualPrice: '1490',
-      employeeLimit: 200,
-      featuresJson: JSON.stringify(['advanced_reporting', 'custom_workflows']),
+      employeeLimit: 50,
+      featuresJson: JSON.stringify({
+        users: 50,
+        invoicesPerMonth: 2000,
+        aiExtraction: true,
+        aiAssistant: 'full',
+        approvals: 'advanced',
+        reports: 'advanced',
+        departments: -1,
+      }),
     },
     {
       key: 'enterprise',
@@ -74,7 +101,15 @@ export async function ensureSubscriptionPlans() {
       monthlyPrice: '0',
       annualPrice: '0',
       employeeLimit: 10000,
-      featuresJson: JSON.stringify(['custom_limits', 'dedicated_support']),
+      featuresJson: JSON.stringify({
+        users: -1,
+        invoicesPerMonth: -1,
+        aiExtraction: true,
+        aiAssistant: 'full',
+        approvals: 'advanced',
+        reports: 'advanced',
+        departments: -1,
+      }),
     },
   ]
   for (const plan of plans) {
@@ -112,6 +147,52 @@ async function seedCompanyRoles(companyId: string) {
   return created
 }
 
+async function seedDefaultCategories(companyId: string) {
+  const db = getDb()
+  const cats = [
+    { name: 'Software & Subscriptions', code: 'SOFT' },
+    { name: 'Travel', code: 'TRAV' },
+    { name: 'Office Supplies', code: 'OFF' },
+    { name: 'Professional Services', code: 'PROF' },
+    { name: 'Utilities', code: 'UTIL' },
+    { name: 'Marketing', code: 'MKT' },
+    { name: 'Other', code: 'OTHER' },
+  ]
+  for (const c of cats) {
+    await db.insert(expenseCategories).values({ companyId, ...c })
+  }
+}
+
+async function seedDefaultApprovalWorkflow(companyId: string) {
+  const db = getDb()
+  const [workflow] = await db
+    .insert(approvalWorkflows)
+    .values({
+      companyId,
+      name: 'Default Expense Approval',
+      entityType: 'expense',
+      active: true,
+    })
+    .returning()
+
+  const steps = [
+    { stepOrder: 1, name: 'Department Head', roleKey: 'department_manager', amountThreshold: null },
+    { stepOrder: 2, name: 'Finance Manager', roleKey: 'finance_manager', amountThreshold: null },
+    { stepOrder: 3, name: 'CEO', roleKey: 'ceo', amountThreshold: '5000' },
+  ]
+  for (const s of steps) {
+    await db.insert(approvalSteps).values({
+      companyId,
+      workflowId: workflow.id,
+      stepOrder: s.stepOrder,
+      name: s.name,
+      roleKey: s.roleKey,
+      amountThreshold: s.amountThreshold,
+    })
+  }
+  return workflow
+}
+
 export async function provisionCompany(input: {
   companyName: string
   businessEmail: string
@@ -140,6 +221,14 @@ export async function provisionCompany(input: {
   const [slugHit] = await db.select().from(companies).where(eq(companies.slug, slug)).limit(1)
   if (slugHit) slug = `${slug}-${nanoid(6).toLowerCase()}`
 
+  const country = input.country ?? 'US'
+  const regional =
+    country === 'GB' || country === 'UK'
+      ? { currency: 'GBP', timezone: 'Europe/London', dateFormat: 'DD/MM/YYYY', taxLabel: 'vat' }
+      : country === 'AE' || country === 'UAE'
+        ? { currency: 'AED', timezone: 'Asia/Dubai', dateFormat: 'DD/MM/YYYY', taxLabel: 'vat' }
+        : { currency: 'USD', timezone: 'America/New_York', dateFormat: 'MM/DD/YYYY', taxLabel: 'sales_tax' }
+
   const [company] = await db
     .insert(companies)
     .values({
@@ -147,16 +236,25 @@ export async function provisionCompany(input: {
       slug,
       businessEmail: input.businessEmail.toLowerCase(),
       phone: input.phone,
-      country: input.country,
+      country,
       industry: input.industry,
       companySize: input.companySize,
       status: 'active',
     })
     .returning()
 
-  await db.insert(companySettings).values({ companyId: company.id })
+  await db.insert(companySettings).values({
+    companyId: company.id,
+    currency: regional.currency,
+    timezone: regional.timezone,
+    dateFormat: regional.dateFormat,
+    taxLabel: regional.taxLabel,
+    fiscalYearStart: 'January',
+  })
 
   const roleMap = await seedCompanyRoles(company.id)
+  await seedDefaultCategories(company.id)
+  await seedDefaultApprovalWorkflow(company.id)
 
   const defaultDepts = [
     { name: 'Operations', code: 'OPS' },
@@ -177,7 +275,7 @@ export async function provisionCompany(input: {
       companyId: company.id,
       userId: input.ownerUserId,
       status: 'active',
-      designation: 'Company Admin',
+      designation: 'Organization Admin',
       joiningDate: new Date(),
     })
     .returning()
@@ -209,14 +307,14 @@ export async function provisionCompany(input: {
     action: 'company.provisioned',
     entityType: 'company',
     entityId: company.id,
-    summary: `Company ${company.name} provisioned`,
+    summary: `Organization ${company.name} provisioned`,
   })
 
   await notifyUser({
     companyId: company.id,
     userId: input.ownerUserId,
-    title: 'Welcome to Doxcta Procure',
-    body: `${company.name} workspace is ready. Invite your team to get started.`,
+    title: 'Welcome to Doxcta AI',
+    body: `${company.name} workspace is ready. Invite your team and start tracking expenses.`,
   })
 
   return { company, membership, roleMap }

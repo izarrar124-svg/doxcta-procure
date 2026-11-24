@@ -1,8 +1,5 @@
-export default function ProcurementComingSoon() {
-  return (
-    <div>
-      <h1>Procurement</h1>
-      <p className="muted">Procurement operations ship in Phase 6.</p>
-    </div>
-  )
+import { redirect } from 'next/navigation'
+
+export default function LegacyProcurementRedirect() {
+  redirect('/vendors')
 }

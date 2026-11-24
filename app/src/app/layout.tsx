@@ -3,10 +3,11 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Doxcta Procure',
-    template: '%s | Doxcta Procure',
+    default: 'Doxcta AI',
+    template: '%s | Doxcta AI',
   },
-  description: 'Purchase requests, approvals, and spend reporting for growing teams.',
+  description:
+    'Record expenses, upload invoices, run approvals, and track what is still unpaid — for growing teams.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

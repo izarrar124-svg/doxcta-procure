@@ -1,26 +1,23 @@
-# Security — Phase 1–4
+# Security — Doxcta AI MVP
 
-## Implemented
+## Controls implemented
 
-- Password hashing via Better Auth (never plain text)
-- HTTP-only session cookies (`nextCookies` plugin)
-- Server-side membership and permission checks
-- Suspended company hard-stop on membership routes
-- Invitation email must match accept form email
-- Audit log writes for provisioning, invites, status changes (no secrets logged)
-- Env-based secrets (`.env.example` placeholders only)
+- HTTPS (Vercel)
+- Better Auth password hashing + session cookies
+- RBAC permission keys on server actions/routes
+- Organization isolation via membership checks
+- Append-only `audit_logs` for financial and admin events
+- Vendor bank fields gated by `vendors.bank_view`
+- File type/size validation on invoice upload
+- Idempotency keys on expense create and payment record
+- Plan invoice quotas via `usage_records`
+- Optional Postgres RLS (`app/sql/rls.sql`)
+- AI assistant: tool-calling over verified aggregates only
 
-## Required before production traffic
+## Secrets
 
-- Set strong `BETTER_AUTH_SECRET`
-- Enable Resend (or equivalent) for reset/invite emails
-- Turn on Neon backups
-- Disable Vercel Deployment Protection SSO for public marketing pages when ready
-- Add rate limiting on auth/register endpoints (Phase 12 hardening)
-- Add RLS policies mirroring app guards (optional defense-in-depth; app guards remain mandatory)
+Never commit `.env`. Required production secrets: `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_APP_URL`. Recommended: `OPENAI_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `RESEND_API_KEY`, Stripe keys.
 
-## Explicit non-goals this cut
+## Compliance posture
 
-- Payment card handling
-- File upload virus scanning
-- Full marketing spam protection stack
+Security controls support GDPR/PDPL readiness work; do **not** claim SOC 2 or tax-compliance certification from these controls alone.

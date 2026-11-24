@@ -106,6 +106,22 @@ export async function requirePermission(companyId: string, permission: Permissio
   return { ...ctx, permissions: perms }
 }
 
+export async function requireAnyPermission(
+  companyId: string,
+  needed: PermissionKey[],
+) {
+  const ctx = await requireMembership(companyId)
+  const perms = await listUserPermissions(ctx.membership.id)
+  if (!needed.some((p) => perms.includes(p))) throw new Error('FORBIDDEN')
+  return { ...ctx, permissions: perms }
+}
+
+export async function getMembershipPermissions(companyId: string) {
+  const ctx = await requireMembership(companyId)
+  const perms = await listUserPermissions(ctx.membership.id)
+  return { ...ctx, permissions: perms }
+}
+
 export async function setActiveCompany(userId: string, companyId: string, sessionToken: string) {
   await requireMembership(companyId)
   const db = getDb()

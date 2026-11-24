@@ -405,73 +405,261 @@
   border-top: 1px solid var(--border-default);
 }
 
-.auth-page {
-  min-height: 100vh;
+/* Opervia-style split auth (dark brand + light form) */
+.dx-login {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  background: #f7f8fb;
+}
+
+.dx-login__brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: clamp(28px, 4vw, 48px);
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%, color-mix(in srgb, var(--color-lime-500) 16%, transparent), transparent 55%),
+    linear-gradient(165deg, #0f1a15 0%, #0a1210 48%, #07110d 100%);
+  color: #e8ebe8;
+}
+
+.dx-login__brand-top .dx-logo-img {
+  max-height: 26px;
+  width: auto;
+  height: auto;
+}
+
+.dx-login__brand-title {
+  margin: 0;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #fff;
+  max-width: 18ch;
+}
+
+.dx-login__brand-body {
+  margin: 16px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: color-mix(in srgb, #e8ebe8 72%, transparent);
+  max-width: 42ch;
+}
+
+.dx-login__brand-foot {
+  margin: 0;
+  font-size: 13px;
+  color: color-mix(in srgb, #e8ebe8 48%, transparent);
+}
+
+.dx-login__panel {
   display: grid;
   place-items: center;
-  padding: 24px;
-  background-color: var(--color-bg-0);
-  background-image:
-    radial-gradient(ellipse 90% 70% at 15% -10%, rgba(184, 255, 61, 0.16), transparent 55%),
-    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(139, 190, 71, 0.12), transparent 55%);
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 0%, color-mix(in srgb, var(--color-lime-500) 12%, transparent), transparent 60%),
+    #f7f8fb;
+  color: #171717;
 }
 
-.auth-card {
-  width: min(420px, 100%);
-  border-radius: 24px;
-  border: 1px solid var(--border-default);
-  background: rgba(13, 27, 22, 0.92);
-  box-shadow: var(--shadow-card);
-  padding: 32px 28px;
+.dx-login__form {
+  width: min(400px, 100%);
+  display: grid;
+  gap: 18px;
 }
 
-.auth-card h1 {
-  margin: 18px 0 6px;
-  font-family: var(--font-display);
-  font-size: 2rem;
+.dx-login__form--wide {
+  width: min(480px, 100%);
 }
 
-.auth-card .subtitle {
-  margin: 0 0 22px;
-  color: var(--text-muted);
+.dx-login__heading h1 {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #121314;
+  line-height: 1.1;
 }
 
-.auth-field {
-  margin-bottom: 14px;
+.dx-login__heading p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: #5c5f66;
 }
 
-.password-field {
+.dx-login__field .dx-label,
+.dx-login__password-meta .dx-label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #121314;
+}
+
+.dx-login__panel .dx-input,
+.dx-login__panel select.dx-input {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #bfc1c4;
+  background: #fff;
+  color: #171717;
+  padding: 0 12px;
+  font-size: 14px;
+}
+
+.dx-login__panel .dx-input::placeholder {
+  color: #9aa0a6;
+}
+
+.dx-login__panel .dx-input:focus,
+.dx-login__panel select.dx-input:focus {
+  outline: 2px solid color-mix(in srgb, var(--color-lime-500) 55%, #121314);
+  border-color: color-mix(in srgb, var(--color-lime-500) 55%, #121314);
+}
+
+.dx-login__password-block {
+  display: grid;
+  gap: 6px;
+}
+
+.dx-login__password-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dx-login__password-meta .dx-label {
+  margin-bottom: 0;
+}
+
+.dx-login__text-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d5c1a;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dx-login__text-link:hover {
+  color: #2f4a12;
+}
+
+.dx-login__password-field {
   position: relative;
 }
 
-.password-field .dx-input {
-  padding-right: 72px;
+.dx-login__password-field .dx-input {
+  padding-right: 64px;
 }
 
-.password-toggle {
+.dx-login__show {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  border: none;
+  border: 0;
   background: transparent;
-  color: var(--color-lime-300);
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  padding: 6px 8px;
-  border-radius: 8px;
+  color: #5c5f66;
+  padding: 4px 6px;
 }
 
-.password-toggle:hover {
-  color: var(--color-lime-500);
-  background: rgba(184, 255, 61, 0.08);
+.dx-login__show:hover {
+  color: #121314;
 }
 
-.password-toggle:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 1px;
+.dx-login__submit.dx-btn,
+.dx-login__submit {
+  width: 100%;
+  height: 40px !important;
+  border-radius: 8px !important;
+  font-weight: 600;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.dx-login__submit:hover {
+  transform: none !important;
+}
+
+.dx-login__error {
+  margin: 0;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.dx-login__sent {
+  margin: 0;
+  color: #5c5f66;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.dx-login__footer {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: #5c5f66;
+}
+
+.dx-login__footer a {
+  color: #3d5c1a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.dx-login__footer a:hover {
+  color: #2f4a12;
+}
+
+.dx-login__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .dx-login__form--wide .dx-login__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dx-login__field--span {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 860px) {
+  .dx-login {
+    grid-template-columns: 1fr;
+  }
+  .dx-login__brand {
+    min-height: auto;
+    padding: 24px 20px 28px;
+    gap: 20px;
+  }
+  .dx-login__brand-title {
+    max-width: none;
+    font-size: 26px;
+  }
+  .dx-login__brand-body {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  .dx-login__brand-foot {
+    display: none;
+  }
+  .dx-login__heading h1 {
+    font-size: 32px;
+  }
 }
 
 .auth-divider {

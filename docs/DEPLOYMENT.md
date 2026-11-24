@@ -1,34 +1,32 @@
-# Deployment — Doxcta Procure
+# Deployment — Doxcta AI MVP
 
-## Targets
+## Vercel + Neon
 
-- GitHub: https://github.com/izarrar124-svg/doxcta-procure
-- Vercel project: `doxcta-procure` (root directory: `app`)
-- Production URL: https://doxcta-procure.vercel.app
+1. Set env vars from `app/.env.example`
+2. `cd app && npm run db:push && npm run db:seed`
+3. Deploy the `app/` project to Vercel
+4. Configure `BETTER_AUTH_URL` / `NEXT_PUBLIC_APP_URL` to the production host
+5. Optionally add Vercel Blob, OpenAI, Resend, Stripe
 
-## Cutover checklist (Vite → Next.js)
+## Production checklist
 
-1. Create a Neon project and copy the connection string.
-2. In Vercel → Project → Settings → Environment Variables, set:
-   - `DATABASE_URL`
-   - `BETTER_AUTH_SECRET` (long random)
-   - `BETTER_AUTH_URL` = `https://doxcta-procure.vercel.app`
-   - `NEXT_PUBLIC_APP_URL` = same
-   - Optional: `RESEND_API_KEY`, `EMAIL_FROM`
-3. Redeploy from `main`.
-4. From a trusted machine with `DATABASE_URL`:
-   ```bash
-   cd app
-   npm run db:push
-   SUPER_ADMIN_EMAIL=... SUPER_ADMIN_PASSWORD=... npm run db:seed
-   ```
-5. Verify `/register`, `/login`, `/dashboard`, `/super-admin`.
-6. Optionally disable Vercel Authentication under Deployment Protection for public access.
+- [ ] Neon `DATABASE_URL` connected
+- [ ] Super Admin seeded
+- [ ] Email verification/reset working (or console fallback accepted for pilot)
+- [ ] OpenAI key for live extraction (mock works for demos)
+- [ ] Blob token for durable invoice files
+- [ ] Stripe prices mapped for paid plans (dev activates plan without Stripe)
+- [ ] Optional RLS applied
+- [ ] Backups enabled on Neon
+- [ ] Cross-tenant isolation smoke test
 
-## Staging
+## Local
 
-Create a second Vercel environment + Neon branch. Never run destructive resets against production.
-
-## Rollback
-
-Previous Vite SPA commits remain in git history. Prefer forward-fix for schema; avoid dropping tenant tables.
+```bash
+cd app
+cp .env.example .env.local
+npm install
+npm run db:push
+npm run db:seed
+npm run dev
+```

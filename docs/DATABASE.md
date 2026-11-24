@@ -1,38 +1,41 @@
-# Database — Doxcta Procure
+# Database — Doxcta AI MVP
 
-## Engine
+ORM: Drizzle. Database: Neon PostgreSQL.
 
-PostgreSQL on **Neon**, accessed via Drizzle ORM (`@neondatabase/serverless`).
+## Foundation (Phase 1–4)
 
-## Core tables (Phase 1–4)
+users, sessions, accounts, verifications, companies, company_settings, company_memberships, departments, permissions, roles, role_permissions, membership_roles, invitations, subscription_plans, subscriptions, audit_logs, notifications
+
+## Financial domain
 
 | Table | Purpose |
 |---|---|
-| `users`, `sessions`, `accounts`, `verifications` | Better Auth |
-| `companies` | Tenant root |
-| `company_settings` | Currency, timezone, fiscal year, FX |
-| `company_memberships` | User↔company link + employee fields |
-| `departments` | Company org units |
-| `permissions`, `roles`, `role_permissions`, `membership_roles` | RBAC |
-| `invitations` | Email invite tokens |
-| `subscription_plans`, `subscriptions` | Manual SaaS plans |
-| `audit_logs`, `notifications` | Platform/company events |
+| vendors | Suppliers |
+| expense_categories | Categories |
+| expenses | Expense transactions (`NUMERIC` amounts) |
+| invoices | Invoice headers + AI extraction JSON |
+| invoice_items | Line items |
+| invoice_documents | Uploaded file metadata |
+| payments | Payment records; outstanding computed on invoice |
+| approval_workflows / approval_steps | Configurable chains |
+| approvals / approval_history | Runtime approval state |
+| budgets / budget_periods | Allocations |
+| ai_processing_jobs | OCR/extract job status |
+| usage_records | Metered invoices/AI usage |
+| ai_assistant_logs | Query/response audit |
 
-All tenant-owned rows carry `company_id` (except platform-global `permissions` / `subscription_plans`).
+## Money fields
 
-Monetary columns use `numeric` (never float).
+All amounts use `numeric(18,4)`. Each converted row stores `exchange_rate`, `reporting_currency`, and `reporting_amount` so historical reports stay stable.
 
-## Commands
+## Tenancy
+
+Every business table includes `company_id`. Backend authz is primary; optional RLS scripts live in `app/sql/rls.sql`.
+
+## Apply schema
 
 ```bash
 cd app
-cp .env.example .env.local   # set DATABASE_URL
-npm run db:push              # apply schema (dev)
-# or
-npm run db:generate && npm run db:migrate
-npm run db:seed              # create Super Admin
+npm run db:push
+npm run db:seed
 ```
-
-## Isolation
-
-Application services call `requireMembership` / `requirePermission`. Suspended companies are rejected. Do not accept browser-supplied company IDs without membership checks.

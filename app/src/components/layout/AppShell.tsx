@@ -1,26 +1,46 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
-import { listMembershipsForUser } from '@/server/authz'
+import { getMembershipPermissions, listMembershipsForUser } from '@/server/authz'
 import { CompanySwitcher } from '@/components/layout/CompanySwitcher'
 import { SignOutButton } from '@/components/layout/SignOutButton'
+import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
+import type { PermissionKey } from '@/server/permissions'
 
-const spendNav = [
-  { to: '/dashboard', label: 'Dashboard' },
-  { to: '/requests', label: 'Requests', soon: true },
-  { to: '/approvals', label: 'Approvals', soon: true },
-  { to: '/procurement', label: 'Procurement', soon: true },
-  { to: '/procurement/expenses', label: 'Expenses', soon: true },
-  { to: '/analytics', label: 'Analytics', soon: true },
-  { to: '/reports', label: 'Reports', soon: true },
+type NavItem = {
+  to: string
+  label: string
+  anyOf?: PermissionKey[]
+}
+
+const primaryNav: NavItem[] = [
+  { to: '/dashboard', label: 'Overview' },
+  {
+    to: '/expenses',
+    label: 'Expenses',
+    anyOf: ['expenses.view_own', 'expenses.view_department', 'expenses.view_all', 'expenses.create'],
+  },
+  { to: '/invoices', label: 'Invoices', anyOf: ['invoices.view', 'invoices.create'] },
+  { to: '/vendors', label: 'Vendors', anyOf: ['vendors.view', 'vendors.manage'] },
+  { to: '/approvals', label: 'Approvals', anyOf: ['expenses.approve', 'invoices.approve'] },
+  { to: '/payments', label: 'Payments', anyOf: ['payments.view', 'payments.record'] },
+  { to: '/admin/departments', label: 'Departments', anyOf: ['departments.manage'] },
+  { to: '/budgets', label: 'Budgets', anyOf: ['budgets.view', 'budgets.manage'] },
+  { to: '/reports', label: 'Reports & Analytics', anyOf: ['reports.view'] },
+  { to: '/assistant', label: 'AI Assistant', anyOf: ['ai.assistant'] },
   { to: '/notifications', label: 'Notifications' },
 ]
 
-const adminNav = [
-  { to: '/admin/users', label: 'Employees' },
-  { to: '/admin/departments', label: 'Departments' },
-  { to: '/admin/roles', label: 'Roles' },
-  { to: '/admin/settings', label: 'Settings' },
+const adminNav: NavItem[] = [
+  { to: '/admin/users', label: 'Users', anyOf: ['employees.manage'] },
+  { to: '/admin/roles', label: 'Permissions', anyOf: ['roles.manage'] },
+  { to: '/admin/settings', label: 'Settings', anyOf: ['settings.manage'] },
+  { to: '/admin/billing', label: 'Subscription', anyOf: ['settings.manage'] },
 ]
+
+function canSee(perms: string[], item: NavItem) {
+  if (!item.anyOf || item.anyOf.length === 0) return true
+  return item.anyOf.some((p) => perms.includes(p))
+}
 
 export async function AppShell({
   children,
@@ -36,28 +56,32 @@ export async function AppShell({
   isSuperAdmin?: boolean
 }) {
   const memberships = await listMembershipsForUser(userId)
+  let perms: string[] = []
+  if (activeCompanyId) {
+    try {
+      const ctx = await getMembershipPermissions(activeCompanyId)
+      perms = ctx.permissions
+    } catch {
+      perms = []
+    }
+  }
 
   return (
     <div className="app-shell">
       <aside className="app-sidebar open">
-        <Link href="/dashboard" className="app-sidebar-brand">
-          <img src="/brand/doxcta-mark-dark.png" alt="Doxcta" />
-          <div className="app-sidebar-brand-text">
-            <strong>Doxcta Procure</strong>
-            <span>Spend management</span>
-          </div>
-        </Link>
+        <div className="app-sidebar-brand">
+          <DoxctaLogo href="/dashboard" size="md" tagline="Expenses & invoices" />
+        </div>
 
-        <div className="app-nav-section">Spend management</div>
-        {spendNav.map((item) => (
+        <div className="app-nav-section">Workspace</div>
+        {primaryNav.filter((item) => canSee(perms, item)).map((item) => (
           <Link key={item.to} href={item.to} className="app-nav-link">
             {item.label}
-            {item.soon ? <span className="muted" style={{ marginLeft: 6, fontSize: 11 }}>soon</span> : null}
           </Link>
         ))}
 
         <div className="app-nav-section">Administration</div>
-        {adminNav.map((item) => (
+        {adminNav.filter((item) => canSee(perms, item)).map((item) => (
           <Link key={item.to} href={item.to} className="app-nav-link">
             {item.label}
           </Link>

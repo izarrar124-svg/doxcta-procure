@@ -29,31 +29,49 @@ export default async function SettingsPage() {
     <div>
       <div className="app-page-header">
         <div>
-          <h1>Settings</h1>
-          <p>Organization defaults for this workspace.</p>
+          <h1>Organization Settings</h1>
+          <p>Company profile, regional settings, and budget thresholds.</p>
         </div>
       </div>
-      <form className="panel" style={{ maxWidth: 560 }} action={updateCompanySettingsAction}>
-        <div className="panel-body">
+      <form className="panel" style={{ maxWidth: 640 }} action={updateCompanySettingsAction}>
+        <div className="panel-body" style={{ display: 'grid', gap: 14 }}>
           <div className="auth-field">
             <Label htmlFor="name">Organization name</Label>
             <Input id="name" name="name" defaultValue={company?.name} required />
           </div>
           <div className="auth-field">
-            <Label htmlFor="currency">Currency</Label>
-            <Input id="currency" name="currency" defaultValue={settings?.currency ?? 'PKR'} />
+            <Label htmlFor="currency">Reporting currency</Label>
+            <select id="currency" name="currency" className="dx-input" defaultValue={settings?.currency ?? 'USD'}>
+              <option value="USD">USD — US Dollar</option>
+              <option value="GBP">GBP — British Pound</option>
+              <option value="AED">AED — UAE Dirham</option>
+            </select>
           </div>
           <div className="auth-field">
             <Label htmlFor="timezone">Timezone</Label>
-            <Input id="timezone" name="timezone" defaultValue={settings?.timezone ?? 'Asia/Karachi'} />
+            <Input id="timezone" name="timezone" defaultValue={settings?.timezone ?? 'America/New_York'} />
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="dateFormat">Date format</Label>
+            <select id="dateFormat" name="dateFormat" className="dx-input" defaultValue={settings?.dateFormat ?? 'MM/DD/YYYY'}>
+              <option value="MM/DD/YYYY">MM/DD/YYYY (US)</option>
+              <option value="DD/MM/YYYY">DD/MM/YYYY (UK/UAE)</option>
+            </select>
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="taxLabel">Tax terminology</Label>
+            <select id="taxLabel" name="taxLabel" className="dx-input" defaultValue={settings?.taxLabel ?? 'sales_tax'}>
+              <option value="sales_tax">Sales tax (US)</option>
+              <option value="vat">VAT (UK/UAE)</option>
+            </select>
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="taxRegistration">Tax registration number</Label>
+            <Input id="taxRegistration" name="taxRegistration" defaultValue={settings?.taxRegistration ?? ''} />
           </div>
           <div className="auth-field">
             <Label htmlFor="fiscalYearStart">Fiscal year start</Label>
-            <Input
-              id="fiscalYearStart"
-              name="fiscalYearStart"
-              defaultValue={settings?.fiscalYearStart ?? 'July'}
-            />
+            <Input id="fiscalYearStart" name="fiscalYearStart" defaultValue={settings?.fiscalYearStart ?? 'January'} />
           </div>
           <div className="auth-field">
             <Label htmlFor="approvalReminderDays">Approval reminder days</Label>
@@ -65,12 +83,20 @@ export default async function SettingsPage() {
             />
           </div>
           <div className="auth-field">
-            <Label htmlFor="fxRatePkrUsd">FX rate (PKR per USD)</Label>
-            <Input
-              id="fxRatePkrUsd"
-              name="fxRatePkrUsd"
-              defaultValue={settings?.fxRatePkrUsd ?? '278'}
-            />
+            <Label htmlFor="budgetAlert70">Budget alert % (first)</Label>
+            <Input id="budgetAlert70" name="budgetAlert70" type="number" defaultValue={settings?.budgetAlert70 ?? 70} />
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="budgetAlert90">Budget alert % (second)</Label>
+            <Input id="budgetAlert90" name="budgetAlert90" type="number" defaultValue={settings?.budgetAlert90 ?? 90} />
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="budgetAlert100">Budget alert % (exceeded)</Label>
+            <Input id="budgetAlert100" name="budgetAlert100" type="number" defaultValue={settings?.budgetAlert100 ?? 100} />
+          </div>
+          <div className="auth-field">
+            <Label htmlFor="fxRatePkrUsd">Legacy FX (PKR per USD)</Label>
+            <Input id="fxRatePkrUsd" name="fxRatePkrUsd" defaultValue={settings?.fxRatePkrUsd ?? '278'} />
           </div>
           <Button type="submit">Save settings</Button>
         </div>

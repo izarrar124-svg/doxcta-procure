@@ -86,3 +86,32 @@
 /* Matches the source's `md:grid-cols-2 lg:grid-cols-5` with the brand block spanning 2 */
 .dx-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (min-width:1024px){.dx-footer-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+/* Official Doxcta lockup (transparent PNG from brand artwork) */
+.dx-logo{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:inherit;
+  line-height:1;
+}
+.dx-logo-stacked{
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
+}
+.dx-logo-img{
+  display:block;
+  height:auto;
+  width:auto;
+  max-height:44px;
+  object-fit:contain;
+}
+.dx-logo-tag{
+  font-family:var(--font-mono,'JetBrains Mono',monospace);
+  font-size:0.68rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--color-bone-muted,#9fb0a7);
+}

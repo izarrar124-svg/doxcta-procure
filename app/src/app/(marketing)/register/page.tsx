@@ -7,6 +7,7 @@ import { registerCompanyAction, type RegisterState } from '@/server/actions/regi
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
+import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
 
 const initial: RegisterState = { ok: false }
 
@@ -22,59 +23,104 @@ export default function RegisterPage() {
   }, [state, router])
 
   return (
-    <div className="auth-page">
-      <form className="auth-card" action={action} style={{ width: 'min(520px, 100%)' }}>
-        <img src="/brand/doxcta-lockup-dark.png" alt="Doxcta" style={{ height: 34 }} />
-        <h1>Create your company</h1>
-        <p className="subtitle">Start a Doxcta Procure workspace for your team.</p>
+    <main className="dx-login">
+      <aside className="dx-login__brand" aria-label="Doxcta">
+        <div className="dx-login__brand-top">
+          <DoxctaLogo size="sm" />
+        </div>
+        <div className="dx-login__brand-copy">
+          <h2 className="dx-login__brand-title">
+            Start a workspace for expenses and invoices.
+          </h2>
+          <p className="dx-login__brand-body">
+            14 days free. Invite your team when you are ready. No shared inbox password required.
+          </p>
+        </div>
+        <p className="dx-login__brand-foot">© {new Date().getFullYear()} Doxcta</p>
+      </aside>
 
-        <div className="auth-field">
-          <Label htmlFor="companyName">Company name</Label>
-          <Input id="companyName" name="companyName" required />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="contactName">Contact person</Label>
-          <Input id="contactName" name="contactName" required />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="businessEmail">Business email</Label>
-          <Input id="businessEmail" name="businessEmail" type="email" required />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" name="phone" />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="country">Country</Label>
-          <Input id="country" name="country" />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="industry">Industry</Label>
-          <Input id="industry" name="industry" />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="companySize">Company size</Label>
-          <Input id="companySize" name="companySize" placeholder="e.g. 11-50" />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" name="password" type="password" minLength={8} required />
-        </div>
-        <div className="auth-field">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
-          <Input id="confirmPassword" name="confirmPassword" type="password" minLength={8} required />
-        </div>
+      <section className="dx-login__panel">
+        <form className="dx-login__form dx-login__form--wide" action={action}>
+          <div className="dx-login__heading">
+            <h1>Create workspace</h1>
+            <p>Tell us about your organization to open a trial.</p>
+          </div>
 
-        {state.error ? <p style={{ color: 'var(--color-danger)' }}>{state.error}</p> : null}
+          <div className="dx-login__grid">
+            <div className="dx-login__field">
+              <Label htmlFor="companyName">Organization name</Label>
+              <Input id="companyName" name="companyName" placeholder="Acme Ltd" required />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="contactName">Contact person</Label>
+              <Input id="contactName" name="contactName" placeholder="Jane Smith" required />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="businessEmail">Business email</Label>
+              <Input
+                id="businessEmail"
+                name="businessEmail"
+                type="email"
+                autoComplete="email"
+                placeholder="you@company.com"
+                required
+              />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" name="phone" placeholder="+1 555 000 0000" />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="country">Country</Label>
+              <select id="country" name="country" className="dx-input" defaultValue="US">
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="AE">United Arab Emirates</option>
+              </select>
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="industry">Industry</Label>
+              <Input id="industry" name="industry" placeholder="Professional services" />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="companySize">Company size</Label>
+              <Input id="companySize" name="companySize" placeholder="e.g. 11-50" />
+            </div>
+            <div className="dx-login__field">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                minLength={8}
+                required
+              />
+            </div>
+            <div className="dx-login__field dx-login__field--span">
+              <Label htmlFor="confirmPassword">Confirm password</Label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                minLength={8}
+                required
+              />
+            </div>
+          </div>
 
-        <Button type="submit" style={{ width: '100%' }} disabled={pending}>
-          {pending ? 'Creating…' : 'Create workspace'}
-        </Button>
+          {state.error ? <p className="dx-login__error">{state.error}</p> : null}
 
-        <p className="muted" style={{ marginTop: 16, textAlign: 'center' }}>
-          Already registered? <Link href="/login">Sign in</Link>
-        </p>
-      </form>
-    </div>
+          <Button type="submit" className="dx-login__submit" disabled={pending}>
+            {pending ? 'Creating…' : 'Create workspace'}
+          </Button>
+
+          <p className="dx-login__footer">
+            Already registered? <Link href="/login">Sign in</Link>
+          </p>
+        </form>
+      </section>
+    </main>
   )
 }

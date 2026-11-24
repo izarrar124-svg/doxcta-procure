@@ -55,11 +55,17 @@ export async function updateCompanySettingsAction(formData: FormData): Promise<v
   await db
     .update(companySettings)
     .set({
-      currency: String(formData.get('currency') || 'PKR'),
-      timezone: String(formData.get('timezone') || 'Asia/Karachi'),
-      fiscalYearStart: String(formData.get('fiscalYearStart') || 'July'),
+      currency: String(formData.get('currency') || 'USD'),
+      timezone: String(formData.get('timezone') || 'America/New_York'),
+      fiscalYearStart: String(formData.get('fiscalYearStart') || 'January'),
       approvalReminderDays: Number(formData.get('approvalReminderDays') || 3),
       fxRatePkrUsd: String(formData.get('fxRatePkrUsd') || '278'),
+      dateFormat: String(formData.get('dateFormat') || 'MM/DD/YYYY'),
+      taxLabel: String(formData.get('taxLabel') || 'sales_tax'),
+      taxRegistration: String(formData.get('taxRegistration') || '') || null,
+      budgetAlert70: Number(formData.get('budgetAlert70') || 70),
+      budgetAlert90: Number(formData.get('budgetAlert90') || 90),
+      budgetAlert100: Number(formData.get('budgetAlert100') || 100),
       updatedAt: new Date(),
     })
     .where(eq(companySettings.companyId, companyId))
@@ -101,6 +107,18 @@ export async function inviteEmployeeAction(formData: FormData): Promise<void> {
   if (!email || !roleId) return
 
   const db = getDb()
+  const { getPlanLimits } = await import('@/server/usage')
+  const limits = await getPlanLimits(companyId)
+  if (limits.employeeLimit >= 0) {
+    const members = await db
+      .select()
+      .from(companyMemberships)
+      .where(and(eq(companyMemberships.companyId, companyId), eq(companyMemberships.status, 'active')))
+    if (members.length >= limits.employeeLimit) {
+      throw new Error('USER_QUOTA_EXCEEDED')
+    }
+  }
+
   const token = nanoid(32)
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
   await db.insert(invitations).values({
@@ -116,8 +134,8 @@ export async function inviteEmployeeAction(formData: FormData): Promise<void> {
   const url = `${base}/invite/${token}`
   await sendEmail({
     to: email,
-    subject: 'You are invited to Doxcta Procure',
-    html: `<p>You have been invited to join a company workspace.</p><p><a href="${url}">Accept invitation</a></p>`,
+    subject: 'You are invited to Doxcta AI',
+    html: `<p>You have been invited to join an organization workspace on Doxcta AI.</p><p><a href="${url}">Accept invitation</a></p>`,
   })
 
   await writeAudit({

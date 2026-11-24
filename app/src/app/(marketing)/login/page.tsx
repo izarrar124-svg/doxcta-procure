@@ -7,6 +7,7 @@ import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Label } from '@/components/ui/Label'
+import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
 
 function LoginForm() {
   const router = useRouter()
@@ -32,59 +33,81 @@ function LoginForm() {
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-card" onSubmit={onSubmit}>
-        <img src="/brand/doxcta-lockup-dark.png" alt="Doxcta" style={{ height: 34 }} />
-        <h1>Sign in</h1>
-        <p className="subtitle">Access your company workspace.</p>
-
-        <div className="auth-field">
-          <Label htmlFor="email">Work email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <main className="dx-login">
+      <aside className="dx-login__brand" aria-label="Doxcta">
+        <div className="dx-login__brand-top">
+          <DoxctaLogo size="sm" />
         </div>
+        <div className="dx-login__brand-copy">
+          <h2 className="dx-login__brand-title">
+            Expenses, invoices, and approvals kept in one place.
+          </h2>
+          <p className="dx-login__brand-body">
+            Upload invoices, track what you still owe, and see department spend
+            without another spreadsheet.
+          </p>
+        </div>
+        <p className="dx-login__brand-foot">© {new Date().getFullYear()} Doxcta</p>
+      </aside>
 
-        <div className="auth-field">
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Label htmlFor="password">Password</Label>
-            <Link href="/forgot-password" className="dx-btn dx-btn-link dx-btn-sm" style={{ height: 'auto' }}>
-              Forgot password?
-            </Link>
+      <section className="dx-login__panel">
+        <form className="dx-login__form" onSubmit={onSubmit}>
+          <div className="dx-login__heading">
+            <h1>Sign in</h1>
+            <p>Expense and invoice reporting for your team.</p>
           </div>
-          <div className="password-field">
+
+          <div className="dx-login__field">
+            <Label htmlFor="email">Work email</Label>
             <Input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="email"
+              type="email"
+              autoComplete="username"
+              placeholder="you@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button
-              type="button"
-              className="password-toggle"
-              onClick={() => setShowPassword((v) => !v)}
-            >
-              {showPassword ? 'Hide' : 'Show'}
-            </button>
           </div>
-        </div>
 
-        {error ? <p style={{ color: 'var(--color-danger)' }}>{error}</p> : null}
+          <div className="dx-login__password-block">
+            <div className="dx-login__password-meta">
+              <Label htmlFor="password">Password</Label>
+              <Link href="/forgot-password" className="dx-login__text-link">
+                Forgot password?
+              </Link>
+            </div>
+            <div className="dx-login__password-field">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="dx-login__show"
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+          </div>
 
-        <Button type="submit" style={{ width: '100%' }} disabled={loading}>
-          {loading ? 'Signing in…' : 'Sign in'}
-        </Button>
+          {error ? <p className="dx-login__error">{error}</p> : null}
 
-        <p className="muted" style={{ marginTop: 16, textAlign: 'center' }}>
-          New company? <Link href="/register">Create a workspace</Link>
-        </p>
-      </form>
-    </div>
+          <Button type="submit" className="dx-login__submit" disabled={loading}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </Button>
+
+          <p className="dx-login__footer">
+            New organization? <Link href="/register">Start a free trial</Link>
+          </p>
+        </form>
+      </section>
+    </main>
   )
 }
 
