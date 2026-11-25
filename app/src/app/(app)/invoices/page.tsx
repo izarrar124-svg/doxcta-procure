@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/Button'
 import { StatusPill } from '@/components/ui/StatusPill'
 import { InvoiceUpload } from '@/components/invoices/InvoiceUpload'
 import { listInvoicesAction } from '@/server/invoices/actions'
@@ -44,8 +43,8 @@ export default async function InvoicesPage() {
           <p>Upload invoices for AI extraction or enter them manually.</p>
         </div>
         {canUpload ? (
-          <Link href="/invoices/new">
-            <Button variant="secondary">Manual invoice</Button>
+          <Link href="/invoices/new" className="dx-btn dx-btn-secondary dx-btn-md">
+            Manual invoice
           </Link>
         ) : null}
       </div>

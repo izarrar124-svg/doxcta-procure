@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { ReactNode } from 'react'
 import { getMembershipPermissions, listMembershipsForUser } from '@/server/authz'
+import { AppNavLink } from '@/components/layout/AppNavLink'
 import { CompanySwitcher } from '@/components/layout/CompanySwitcher'
 import { SignOutButton } from '@/components/layout/SignOutButton'
 import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
@@ -75,24 +75,18 @@ export async function AppShell({
 
         <div className="app-nav-section">Workspace</div>
         {primaryNav.filter((item) => canSee(perms, item)).map((item) => (
-          <Link key={item.to} href={item.to} className="app-nav-link">
-            {item.label}
-          </Link>
+          <AppNavLink key={item.to} href={item.to} label={item.label} />
         ))}
 
         <div className="app-nav-section">Administration</div>
         {adminNav.filter((item) => canSee(perms, item)).map((item) => (
-          <Link key={item.to} href={item.to} className="app-nav-link">
-            {item.label}
-          </Link>
+          <AppNavLink key={item.to} href={item.to} label={item.label} />
         ))}
 
         {isSuperAdmin ? (
           <>
             <div className="app-nav-section">Platform</div>
-            <Link href="/super-admin" className="app-nav-link">
-              Super Admin
-            </Link>
+            <AppNavLink href="/super-admin" label="Super Admin" />
           </>
         ) : null}
       </aside>

@@ -31,12 +31,20 @@ export function OverviewFilters({
   const [fromVal, setFromVal] = useState(from || '')
   const [toVal, setToVal] = useState(to || '')
   const [searchVal, setSearchVal] = useState(q || '')
+  const [dateError, setDateError] = useState<string | null>(null)
 
   function applyDates(e: FormEvent) {
     e.preventDefault()
+    if ((fromVal && !toVal) || (!fromVal && toVal)) {
+      setDateError('Choose both From and To dates.')
+      return
+    }
+    setDateError(null)
     const params = new URLSearchParams()
-    if (fromVal) params.set('from', fromVal)
-    if (toVal) params.set('to', toVal)
+    if (fromVal && toVal) {
+      params.set('from', fromVal)
+      params.set('to', toVal)
+    }
     if (searchVal.trim()) params.set('q', searchVal.trim())
     const qs = params.toString()
     router.push(qs ? `/dashboard?${qs}` : '/dashboard')
@@ -81,16 +89,32 @@ export function OverviewFilters({
             id="ov-from"
             type="date"
             value={fromVal}
-            onChange={(e) => setFromVal(e.target.value)}
+            onChange={(e) => {
+              setFromVal(e.target.value)
+              setDateError(null)
+            }}
           />
         </div>
         <div className="overview-filter-field">
           <label htmlFor="ov-to">To</label>
-          <input id="ov-to" type="date" value={toVal} onChange={(e) => setToVal(e.target.value)} />
+          <input
+            id="ov-to"
+            type="date"
+            value={toVal}
+            onChange={(e) => {
+              setToVal(e.target.value)
+              setDateError(null)
+            }}
+          />
         </div>
         <Button type="submit" size="sm" variant="secondary">
           Apply dates
         </Button>
+        {dateError ? (
+          <p className="dx-login__error" style={{ margin: 0, alignSelf: 'end' }}>
+            {dateError}
+          </p>
+        ) : null}
       </form>
 
       <div className="overview-filters-row">

@@ -112,7 +112,11 @@ export function OverviewBoard({
             <h3>Monthly spending trend</h3>
           </div>
           <div className="panel-body">
-            <MonthlyTrendChart data={filteredMonthly} />
+            {needle && filteredMonthly.length === 0 ? (
+              <p className="muted">No matching months for this filter.</p>
+            ) : (
+              <MonthlyTrendChart data={filteredMonthly} />
+            )}
           </div>
         </div>
         <div className="panel chart-panel">
@@ -120,7 +124,11 @@ export function OverviewBoard({
             <h3>Departmental expenditure</h3>
           </div>
           <div className="panel-body">
-            <DeptSpendChart data={filteredDept} />
+            {needle && filteredDept.length === 0 ? (
+              <p className="muted">No matching departments for this filter.</p>
+            ) : (
+              <DeptSpendChart data={filteredDept} />
+            )}
           </div>
         </div>
         <div className="panel chart-panel">
@@ -128,7 +136,11 @@ export function OverviewBoard({
             <h3>Top vendors</h3>
           </div>
           <div className="panel-body">
-            <TopVendorsChart data={filteredVendors} />
+            {needle && filteredVendors.length === 0 ? (
+              <p className="muted">No matching vendors for this filter.</p>
+            ) : (
+              <TopVendorsChart data={filteredVendors} />
+            )}
           </div>
         </div>
         <div className="panel chart-panel">
@@ -136,7 +148,11 @@ export function OverviewBoard({
             <h3>Payables aging</h3>
           </div>
           <div className="panel-body">
-            <AgingBarsChart data={filteredAging} />
+            {needle && filteredAging.length === 0 ? (
+              <p className="muted">No matching aging buckets for this filter.</p>
+            ) : (
+              <AgingBarsChart data={filteredAging} />
+            )}
           </div>
         </div>
       </div>

@@ -354,14 +354,42 @@
   overflow: hidden;
   transition:
     border-color var(--duration-ui) ease,
-    box-shadow var(--duration-ui) ease,
-    transform var(--duration-ui) ease;
+    box-shadow var(--duration-ui) ease;
 }
 
 .panel:hover {
   border-color: rgba(184, 255, 61, 0.28);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
+}
+
+.panel--static:hover {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-card);
+}
+
+.invoice-upload-file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoice-upload-file input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.invoice-upload-file__name {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-bone-muted);
 }
 
 .panel-header {

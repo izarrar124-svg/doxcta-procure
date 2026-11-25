@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 
@@ -33,15 +33,21 @@ function friendlyUploadError(code: string | undefined, status: number) {
 
 export function InvoiceUpload() {
   const router = useRouter()
+  const fileInputId = useId()
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
+  const [fileName, setFileName] = useState<string | null>(null)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget
     const fd = new FormData(form)
     const file = fd.get('file')
-    if (file instanceof File && file.size > 4.5 * 1024 * 1024) {
+    if (!(file instanceof File) || file.size === 0) {
+      setMessage('Choose a file before uploading.')
+      return
+    }
+    if (file.size > 4.5 * 1024 * 1024) {
       setMessage(
         'This file is over 4.5 MB and may fail on the hosted server. Compress it or use a smaller scan.',
       )
@@ -67,6 +73,7 @@ export function InvoiceUpload() {
       }
       setMessage('Upload queued for AI processing')
       form.reset()
+      setFileName(null)
       router.push(`/invoices/${json.invoiceId}/review`)
       router.refresh()
     } catch {
@@ -77,30 +84,46 @@ export function InvoiceUpload() {
   }
 
   return (
-    <form className="panel" onSubmit={onSubmit}>
+    <div className="panel panel--static">
       <div className="panel-header">
         <h3>Upload invoice</h3>
       </div>
-      <div className="panel-body" style={{ display: 'grid', gap: 12 }}>
-        <p className="muted">
-          PDF, JPG, or PNG. Prefer files under 4 MB on production. AI extracts fields for your
-          review.
-        </p>
-        <input
-          type="file"
-          name="file"
-          accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
-          required
-        />
-        <Button type="submit" disabled={busy}>
-          {busy ? 'Uploading…' : 'Upload & process'}
-        </Button>
-        {message ? (
-          <p className="dx-login__error" style={{ margin: 0 }}>
-            {message}
+      <div className="panel-body">
+        <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12 }}>
+          <p className="muted" style={{ margin: 0 }}>
+            PDF, JPG, or PNG. Prefer files under 4 MB on production. AI extracts fields for your
+            review.
           </p>
-        ) : null}
+          <div className="invoice-upload-file">
+            <input
+              id={fileInputId}
+              type="file"
+              name="file"
+              accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+              required
+              onChange={(e) => {
+                const next = e.target.files?.[0]
+                setFileName(next?.name || null)
+                setMessage(null)
+              }}
+            />
+            <label htmlFor={fileInputId} className="dx-btn dx-btn-secondary dx-btn-md">
+              Choose file
+            </label>
+            <p className="invoice-upload-file__name">{fileName || 'No file selected'}</p>
+          </div>
+          <div>
+            <Button type="submit" disabled={busy}>
+              {busy ? 'Uploading…' : 'Upload & process'}
+            </Button>
+          </div>
+          {message ? (
+            <p className="dx-login__error" style={{ margin: 0 }}>
+              {message}
+            </p>
+          ) : null}
+        </form>
       </div>
-    </form>
+    </div>
   )
 }
