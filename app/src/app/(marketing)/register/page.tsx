@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useActionState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useActionState, useEffect } from 'react'
 import { registerCompanyAction, type RegisterState } from '@/server/actions/register'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -11,8 +11,13 @@ import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
 
 const initial: RegisterState = { ok: false }
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter()
+  const params = useSearchParams()
+  const rawPlan = (params.get('plan') || 'starter').toLowerCase()
+  const planKey =
+    rawPlan === 'professional' || rawPlan === 'business' ? rawPlan : 'starter'
+  const isStarterTrial = planKey === 'starter'
   const [state, action, pending] = useActionState(registerCompanyAction, initial)
 
   useEffect(() => {
@@ -33,7 +38,9 @@ export default function RegisterPage() {
             Start a workspace for expenses and invoices.
           </h2>
           <p className="dx-login__brand-body">
-            14 days free. Invite your team when you are ready. No shared inbox password required.
+            {isStarterTrial
+              ? 'Starter includes 14 days free ($29/mo after). Invite your team when you are ready.'
+              : `${planKey[0].toUpperCase()}${planKey.slice(1)} has no free trial. Your workspace starts on that plan.`}
           </p>
         </div>
         <p className="dx-login__brand-foot">© {new Date().getFullYear()} Doxcta</p>
@@ -41,9 +48,14 @@ export default function RegisterPage() {
 
       <section className="dx-login__panel">
         <form className="dx-login__form dx-login__form--wide" action={action}>
+          <input type="hidden" name="planKey" value={planKey} />
           <div className="dx-login__heading">
             <h1>Create workspace</h1>
-            <p>Tell us about your organization to open a trial.</p>
+            <p>
+              {isStarterTrial
+                ? 'Open a Starter workspace with a 14-day free trial.'
+                : `Open a ${planKey[0].toUpperCase()}${planKey.slice(1)} workspace.`}
+            </p>
           </div>
 
           <div className="dx-login__grid">
@@ -122,5 +134,13 @@ export default function RegisterPage() {
         </form>
       </section>
     </main>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   )
 }

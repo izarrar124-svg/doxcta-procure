@@ -17,6 +17,7 @@ const schema = z.object({
   industry: z.string().optional(),
   companySize: z.string().optional(),
   password: z.string().min(8).max(128),
+  planKey: z.enum(['starter', 'professional', 'business']).optional(),
 })
 
 export type RegisterState = { ok: boolean; error?: string; redirectTo?: string }
@@ -25,6 +26,10 @@ export async function registerCompanyAction(
   _prev: RegisterState,
   formData: FormData,
 ): Promise<RegisterState> {
+  const rawPlan = String(formData.get('planKey') || 'starter').toLowerCase()
+  const planKey =
+    rawPlan === 'professional' || rawPlan === 'business' ? rawPlan : 'starter'
+
   const parsed = schema.safeParse({
     companyName: formData.get('companyName'),
     businessEmail: formData.get('businessEmail'),
@@ -35,6 +40,7 @@ export async function registerCompanyAction(
     companySize: formData.get('companySize') || undefined,
     password: formData.get('password'),
     confirmPassword: formData.get('confirmPassword'),
+    planKey,
   })
 
   if (!parsed.success) {
@@ -65,6 +71,7 @@ export async function registerCompanyAction(
       country: parsed.data.country,
       industry: parsed.data.industry,
       companySize: parsed.data.companySize,
+      planKey: parsed.data.planKey ?? 'starter',
     })
 
     // Best-effort: stamp active company on latest session if present

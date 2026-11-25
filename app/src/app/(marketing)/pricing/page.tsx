@@ -18,8 +18,8 @@ export default function PricingPage() {
             clear monthly prices. <span className="accent">no theatre.</span>
           </h1>
           <p className="mkt-hero-lead">
-            Pick the seat and invoice limits that match your team. Try it for 14 days. Talk to us if
-            you need an Enterprise arrangement.
+            Pick the seat and invoice limits that match your team. Starter ($29/mo) includes a 14-day
+            free trial. Talk to us if you need an Enterprise arrangement.
           </p>
         </div>
       </section>
@@ -80,13 +80,19 @@ export default function PricingPage() {
                 <td>10</td>
                 <td>Unlimited</td>
               </tr>
+              <tr>
+                <td>14-day free trial</td>
+                <td>Yes</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
             </tbody>
           </table>
 
           <div className="mkt-cta-row" style={{ marginTop: '2rem' }}>
             <Link href="/register">
               <Button type="button" size="lg">
-                Start 14-day trial
+                Start Starter trial
               </Button>
             </Link>
             <Link href="/">

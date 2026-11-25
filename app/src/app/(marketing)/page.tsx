@@ -28,7 +28,7 @@ export default function HomePage() {
             <div className="mkt-cta-row">
               <Link href="/register">
                 <Button type="button" size="lg">
-                  Try it for 14 days
+                  Try Starter free
                 </Button>
               </Link>
               <Link href="/login">
@@ -222,7 +222,8 @@ export default function HomePage() {
           <div className="mkt-eyebrow">Pricing</div>
           <h2>priced for small teams, not enterprise theater.</h2>
           <p className="mkt-section-lead">
-            USD monthly. 14-day trial. If you need more seats or volume later, move up a plan.
+            USD monthly. Starter ($29/mo) includes a 14-day free trial. Move up when you need more
+            seats or volume.
           </p>
           <PricingGrid />
           <p style={{ marginTop: '1.25rem' }}>
@@ -262,13 +263,13 @@ export default function HomePage() {
         <div className="mkt-container">
           <h2>less typing. clearer spend.</h2>
           <p className="mkt-section-lead">
-            If your week still includes copying invoice PDFs into a sheet, start a trial and see if
-            this fits how your team works.
+            If your week still includes copying invoice PDFs into a sheet, try Starter for 14 days
+            and see if this fits how your team works.
           </p>
           <div className="mkt-cta-row">
             <Link href="/register">
               <Button type="button" size="lg">
-                Start 14-day trial
+                Start Starter trial
               </Button>
             </Link>
             <Link href="/pricing">

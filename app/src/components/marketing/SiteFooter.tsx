@@ -31,7 +31,7 @@ export function SiteFooter() {
           <h4>Workspace</h4>
           <ul>
             <li>
-              <Link href="/register">Start trial</Link>
+              <Link href="/register">Starter trial</Link>
             </li>
             <li>
               <Link href="/login">Sign in</Link>

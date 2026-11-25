@@ -112,7 +112,7 @@ function LoginForm() {
           </Button>
 
           <p className="dx-login__footer">
-            New organization? <Link href="/register">Start a free trial</Link>
+            New organization? <Link href="/register">Start Starter trial</Link>
           </p>
         </form>
       </section>

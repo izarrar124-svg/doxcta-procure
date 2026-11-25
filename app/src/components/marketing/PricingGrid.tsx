@@ -6,7 +6,16 @@ const PLANS = [
     name: 'Starter',
     price: '29',
     blurb: 'A few people. A modest invoice volume. Enough to get off spreadsheets.',
-    features: ['3 users', '100 invoices / month', 'Invoice extraction', 'Basic approvals', 'Core reports'],
+    features: [
+      '14-day free trial',
+      '3 users',
+      '100 invoices / month',
+      'Invoice extraction',
+      'Basic approvals',
+      'Core reports',
+    ],
+    cta: 'Start 14-day trial',
+    trial: true,
   },
   {
     name: 'Professional',
@@ -20,6 +29,8 @@ const PLANS = [
       'Department & aging reports',
     ],
     featured: true,
+    cta: 'Choose Professional',
+    trial: false,
   },
   {
     name: 'Business',
@@ -32,14 +43,16 @@ const PLANS = [
       'Full AI assistant',
       'Full reporting set',
     ],
+    cta: 'Choose Business',
+    trial: false,
   },
-]
+] as const
 
 export function PricingGrid() {
   return (
     <div className="mkt-price-grid">
       {PLANS.map((plan) => (
-        <div key={plan.name} className={`mkt-card${plan.featured ? ' featured' : ''}`}>
+        <div key={plan.name} className={`mkt-card${'featured' in plan && plan.featured ? ' featured' : ''}`}>
           <h3>{plan.name}</h3>
           <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>{plan.blurb}</p>
           <div className="price">
@@ -51,9 +64,9 @@ export function PricingGrid() {
               <li key={f}>{f}</li>
             ))}
           </ul>
-          <Link href="/register">
-            <Button type="button" variant={plan.featured ? 'primary' : 'secondary'}>
-              Start 14-day trial
+          <Link href={plan.trial ? '/register' : `/register?plan=${plan.name.toLowerCase()}`}>
+            <Button type="button" variant={'featured' in plan && plan.featured ? 'primary' : 'secondary'}>
+              {plan.cta}
             </Button>
           </Link>
         </div>

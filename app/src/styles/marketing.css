@@ -272,6 +272,38 @@
   animation: mkt-rise 0.85s ease 0.18s both;
 }
 
+/* Scroll reveals */
+.mkt-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--mkt-reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.mkt-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.mkt-module.mkt-reveal {
+  transform: translateY(14px) scale(0.98);
+}
+
+.mkt-module.mkt-reveal.is-in {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mkt-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Sections */
 .mkt-section {
   padding: 4.5rem 0;
@@ -320,6 +352,18 @@
   background: var(--color-bg-1);
   border: 1px solid var(--border-default);
   border-radius: 14px;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mkt-problem-item:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 6%, var(--color-bg-1));
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
 }
 
 .mkt-problem-item .num {
@@ -422,10 +466,26 @@
 .mkt-frame-side li {
   padding: 0.35rem 0.45rem;
   border-radius: 6px;
+  cursor: default;
+  transition:
+    color 0.16s ease,
+    background 0.16s ease,
+    transform 0.16s ease;
+}
+
+.mkt-frame-side li:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(2px);
 }
 
 .mkt-frame-side li.active {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.mkt-frame-side li.active:hover {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
   color: var(--accent);
 }
 
@@ -590,6 +650,18 @@
   border: 1px solid var(--border-default);
   border-radius: 14px;
   background: var(--color-bg-1);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mkt-step:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 6%, var(--color-bg-1));
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22);
 }
 
 .mkt-step .num {
@@ -628,6 +700,22 @@
   border: 1px solid var(--border-strong);
   font-size: 0.85rem;
   color: var(--text-muted);
+  background: transparent;
+  cursor: default;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.mkt-module:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-strong));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 .mkt-role-grid,
@@ -651,11 +739,31 @@
   border-radius: 14px;
   border: 1px solid var(--border-default);
   background: var(--color-bg-1);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mkt-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 6%, var(--color-bg-1));
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
 }
 
 .mkt-card.featured {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border-default));
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.mkt-card.featured:hover {
+  border-color: color-mix(in srgb, var(--accent) 65%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 9%, var(--color-bg-1));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent),
+    0 18px 40px rgba(0, 0, 0, 0.28);
 }
 
 .mkt-card h3 {
@@ -703,6 +811,22 @@
   color: var(--text-muted);
   line-height: 1.45;
   font-size: 0.95rem;
+  padding: 0.55rem 0.65rem;
+  margin: 0 -0.65rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.mkt-trust-list li:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+  transform: translateX(2px);
 }
 
 .mkt-trust-list li::before {

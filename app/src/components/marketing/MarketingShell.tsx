@@ -5,6 +5,7 @@ import { useState, type ReactNode } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SiteFooter } from '@/components/marketing/SiteFooter'
 import { DoxctaLogo } from '@/components/brand/DoxctaLogo'
+import { ScrollReveal } from '@/components/marketing/ScrollReveal'
 
 export function MarketingShell({
   children,
@@ -21,6 +22,7 @@ export function MarketingShell({
 
   return (
     <div className="mkt">
+      <ScrollReveal />
       <header className="mkt-nav" aria-label="Site header">
         <nav className="mkt-nav-pill" aria-label="Primary">
           <DoxctaLogo size="sm" />
@@ -36,7 +38,7 @@ export function MarketingShell({
             </Link>
             <Link href="/register" className="hide-sm">
               <Button type="button" size="sm" className="mkt-nav-cta">
-                Try for 14 days
+                Try Starter free
               </Button>
             </Link>
             <button
@@ -72,7 +74,7 @@ export function MarketingShell({
             Sign in
           </Link>
           <Link href="/register" className="mkt-nav-mobile-cta" onClick={() => setOpen(false)}>
-            Try for 14 days
+            Try Starter free
           </Link>
         </div>
       </header>

@@ -292,12 +292,16 @@ export async function provisionCompany(input: {
     .where(eq(subscriptionPlans.key, planKey))
     .limit(1)
   if (plan) {
-    const trialDays = input.trialDays ?? 14
+    // 14-day trial is Starter-only ($29/mo). Higher plans start billed/active.
+    const isStarterTrial = plan.key === 'starter'
+    const trialDays = isStarterTrial ? (input.trialDays ?? 14) : 0
     await db.insert(subscriptions).values({
       companyId: company.id,
       planId: plan.id,
-      status: 'trial',
-      trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
+      status: isStarterTrial ? 'trial' : 'active',
+      trialEndsAt: isStarterTrial
+        ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
+        : null,
     })
   }
 
