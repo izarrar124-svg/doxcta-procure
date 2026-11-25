@@ -12,7 +12,25 @@ export default async function InvoicesPage() {
   const companyId =
     (session.session as { activeCompanyId?: string | null }).activeCompanyId ||
     (await getActiveCompanyId(session.user.id))
-  if (!companyId) redirect('/dashboard')
+  if (!companyId) {
+    return (
+      <div>
+        <div className="app-page-header">
+          <div>
+            <h1>Invoice Center</h1>
+            <p>You need an organization workspace before uploading invoices.</p>
+          </div>
+        </div>
+        <p className="muted">
+          Sign up a new workspace from{' '}
+          <Link href="/register" style={{ color: 'var(--accent)' }}>
+            Start Starter trial
+          </Link>
+          , or ask an admin to invite you.
+        </p>
+      </div>
+    )
+  }
   await requireAnyPermission(companyId, ['invoices.view', 'invoices.create'])
   const { permissions } = await getMembershipPermissions(companyId)
   const canUpload = permissions.includes('invoices.create')
