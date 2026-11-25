@@ -1,15 +1,16 @@
-import Link from 'next/link'
 import { eq } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
+import { OverviewBoard } from '@/components/dashboard/OverviewBoard'
 import { getActiveCompanyId, getSession, requireMembership } from '@/server/authz'
 import { getDb } from '@/server/db'
 import { departments, notifications, vendors } from '@/server/db/schema'
-import { getOverviewMetrics } from '@/server/reports/overview'
+import { agingReport, getOverviewMetrics } from '@/server/reports/overview'
+import { searchWorkspace } from '@/server/reports/search'
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ range?: string }>
+  searchParams: Promise<{ range?: string; from?: string; to?: string; q?: string }>
 }) {
   const session = await getSession()
   if (!session?.user) redirect('/login')
@@ -28,9 +29,17 @@ export default async function DashboardPage({
 
   const { company } = await requireMembership(companyId)
   const sp = await searchParams
-  const range = sp.range || 'month'
-  const from = rangeStart(range)
-  const metrics = await getOverviewMetrics(companyId, from)
+  const q = (sp.q || '').trim()
+  const customFrom = parseDay(sp.from)
+  const customTo = parseDay(sp.to, true)
+  const usingCustom = Boolean(customFrom || customTo)
+  const range = usingCustom ? 'custom' : sp.range || 'month'
+  const from = customFrom || (usingCustom ? undefined : rangeStart(range))
+  const to = customTo || undefined
+
+  const metrics = await getOverviewMetrics(companyId, from, to)
+  const aging = await agingReport(companyId)
+  const search = q ? await searchWorkspace(companyId, q) : null
 
   const db = getDb()
   const deptRows = await db.select().from(departments).where(eq(departments.companyId, companyId))
@@ -41,7 +50,27 @@ export default async function DashboardPage({
     .select()
     .from(notifications)
     .where(eq(notifications.userId, session.user.id))
-    .limit(5)
+    .limit(8)
+
+  const monthly = metrics.monthly.map((m) => ({
+    month: m.month,
+    total: Number(m.total),
+  }))
+  const deptSpend = metrics.deptSpend.map((d) => ({
+    name: deptMap[d.departmentId || ''] || 'Unassigned',
+    total: Number(d.total),
+  }))
+  const topVendors = metrics.topVendors.map((v) => ({
+    name: vendorMap[v.vendorId || ''] || 'Unknown',
+    total: Number(v.total),
+  }))
+  const agingData = [
+    { label: 'Current', total: aging.current },
+    { label: '1-30', total: aging.d1_30 },
+    { label: '31-60', total: aging.d31_60 },
+    { label: '61-90', total: aging.d61_90 },
+    { label: '90+', total: aging.d90p },
+  ]
 
   return (
     <div>
@@ -49,13 +78,6 @@ export default async function DashboardPage({
         <div>
           <h1>Overview</h1>
           <p>{company.name}: financial operations at a glance.</p>
-        </div>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {['week', 'month', 'quarter', 'year'].map((r) => (
-            <Link key={r} href={`/dashboard?range=${r}`} className="dx-btn dx-btn-ghost dx-btn-sm">
-              {r === 'week' ? 'This week' : r === 'month' ? 'This month' : r === 'quarter' ? 'This quarter' : 'This year'}
-            </Link>
-          ))}
         </div>
       </div>
 
@@ -80,84 +102,18 @@ export default async function DashboardPage({
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginBottom: 18 }}>
-        <div className="panel">
-          <div className="panel-header">
-            <h3>Departmental expenditure</h3>
-          </div>
-          <div className="panel-body">
-            {metrics.deptSpend.length === 0 ? (
-              <p className="muted">No spend in range.</p>
-            ) : (
-              <ul>
-                {metrics.deptSpend.map((d) => (
-                  <li key={d.departmentId || 'none'}>
-                    {deptMap[d.departmentId || ''] || 'Unassigned'}: {Number(d.total).toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-        <div className="panel">
-          <div className="panel-header">
-            <h3>Top vendors</h3>
-          </div>
-          <div className="panel-body">
-            {metrics.topVendors.length === 0 ? (
-              <p className="muted">No vendor invoices yet.</p>
-            ) : (
-              <ul>
-                {metrics.topVendors.map((v) => (
-                  <li key={v.vendorId || 'none'}>
-                    {vendorMap[v.vendorId || ''] || 'Unknown'}: {Number(v.total).toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="panel" style={{ marginBottom: 18 }}>
-        <div className="panel-header">
-          <h3>Monthly spending trend</h3>
-        </div>
-        <div className="panel-body">
-          {metrics.monthly.length === 0 ? (
-            <p className="muted">No monthly data yet.</p>
-          ) : (
-            <ul>
-              {metrics.monthly.map((m) => (
-                <li key={m.month}>
-                  {m.month}: {Number(m.total).toFixed(2)}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-
-      <div className="panel">
-        <div className="panel-header">
-          <h3>Recent notifications</h3>
-        </div>
-        <div className="panel-body">
-          {notes.length === 0 ? (
-            <p className="muted">No notifications yet.</p>
-          ) : (
-            notes.map((n) => (
-              <div className="activity-item" key={n.id}>
-                <div className="activity-dot" />
-                <div>
-                  <strong>{n.title}</strong>
-                  <div className="muted">{n.body}</div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      <OverviewBoard
+        range={usingCustom ? 'month' : range}
+        from={sp.from}
+        to={sp.to}
+        q={q || undefined}
+        monthly={monthly}
+        deptSpend={deptSpend}
+        topVendors={topVendors}
+        aging={agingData}
+        notes={notes.map((n) => ({ id: n.id, title: n.title, body: n.body }))}
+        search={search}
+      />
     </div>
   )
 }
@@ -171,6 +127,13 @@ function Stat({ label, value }: { label: string; value: string }) {
       </div>
     </div>
   )
+}
+
+function parseDay(value?: string, endOfDay = false) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return undefined
+  const [y, m, d] = value.split('-').map(Number)
+  if (endOfDay) return new Date(Date.UTC(y, m - 1, d, 23, 59, 59, 999))
+  return new Date(Date.UTC(y, m - 1, d, 0, 0, 0, 0))
 }
 
 function rangeStart(range: string) {

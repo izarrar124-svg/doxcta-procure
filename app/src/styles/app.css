@@ -178,6 +178,126 @@
   color: var(--text-muted);
 }
 
+.overview-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border-default);
+  background: var(--surface-card);
+}
+
+.overview-filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.overview-filters-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.overview-filters-presets .is-active {
+  background: rgba(184, 255, 61, 0.14);
+  color: var(--color-lime-300);
+  border-color: rgba(184, 255, 61, 0.35);
+}
+
+.overview-filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.overview-filter-field label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-bone-faint);
+  font-weight: 600;
+}
+
+.overview-filter-field input {
+  height: 36px;
+  border-radius: var(--radius-button);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  color: var(--text-primary);
+  padding: 0 12px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+}
+
+.overview-filter-field input:focus {
+  outline: none;
+  border-color: rgba(184, 255, 61, 0.45);
+  box-shadow: 0 0 0 2px rgba(184, 255, 61, 0.12);
+}
+
+.overview-filter-grow {
+  flex: 1;
+  min-width: 180px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.chart-panel .panel-body {
+  min-height: 240px;
+}
+
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--color-bone-muted);
+  font-size: 0.9rem;
+}
+
+.search-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.search-hit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.search-hit-list a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.search-hit-list a:hover {
+  background: rgba(184, 255, 61, 0.08);
+  border-color: rgba(184, 255, 61, 0.22);
+}
+
+.search-hit-list .muted {
+  font-size: 0.8rem;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -835,6 +955,11 @@
   }
 
   .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-grid,
+  .search-results-grid {
     grid-template-columns: 1fr;
   }
 

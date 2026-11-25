@@ -1,4 +1,4 @@
-import { and, eq, gte, sql } from 'drizzle-orm'
+import { and, eq, gte, lte, sql } from 'drizzle-orm'
 import { getDb } from '@/server/db'
 import { approvals, budgets, expenses, invoices } from '@/server/db/schema'
 
@@ -18,7 +18,10 @@ export async function getOverviewMetrics(companyId: string, from?: Date, to?: Da
     gte(expenses.transactionDate, start),
     sql`${expenses.status} not in ('cancelled','draft','rejected')`,
   ]
-  if (to) expenseConds.push(sql`${expenses.transactionDate} <= ${to}`)
+  if (to) expenseConds.push(lte(expenses.transactionDate, to))
+
+  const invoiceConds = [eq(invoices.companyId, companyId), gte(invoices.createdAt, start)]
+  if (to) invoiceConds.push(lte(invoices.createdAt, to))
 
   const [expenseTotal] = await db
     .select({ total: sql<string>`coalesce(sum(${expenses.reportingAmount}), 0)` })
@@ -28,7 +31,7 @@ export async function getOverviewMetrics(companyId: string, from?: Date, to?: Da
   const [invoiced] = await db
     .select({ total: sql<string>`coalesce(sum(${invoices.reportingAmount}), 0)` })
     .from(invoices)
-    .where(and(eq(invoices.companyId, companyId), gte(invoices.createdAt, start)))
+    .where(and(...invoiceConds))
 
   const [paid] = await db
     .select({
@@ -94,7 +97,7 @@ export async function getOverviewMetrics(companyId: string, from?: Date, to?: Da
       total: sql<string>`coalesce(sum(${expenses.reportingAmount}), 0)`,
     })
     .from(expenses)
-    .where(eq(expenses.companyId, companyId))
+    .where(and(...expenseConds))
     .groupBy(sql`to_char(${expenses.transactionDate}, 'YYYY-MM')`)
     .orderBy(sql`to_char(${expenses.transactionDate}, 'YYYY-MM')`)
 
@@ -104,7 +107,7 @@ export async function getOverviewMetrics(companyId: string, from?: Date, to?: Da
       total: sql<string>`coalesce(sum(${invoices.reportingAmount}), 0)`,
     })
     .from(invoices)
-    .where(eq(invoices.companyId, companyId))
+    .where(and(...invoiceConds))
     .groupBy(invoices.vendorId)
     .orderBy(sql`sum(${invoices.reportingAmount}) desc`)
     .limit(5)
