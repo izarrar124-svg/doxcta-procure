@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { StatusPill } from '@/components/ui/StatusPill'
 import { InvoiceUpload } from '@/components/invoices/InvoiceUpload'
 import { listInvoicesAction } from '@/server/invoices/actions'
-import { getActiveCompanyId, getSession, requireAnyPermission } from '@/server/authz'
+import { getActiveCompanyId, getMembershipPermissions, getSession, requireAnyPermission } from '@/server/authz'
 
 export default async function InvoicesPage() {
   const session = await getSession()
@@ -14,6 +14,8 @@ export default async function InvoicesPage() {
     (await getActiveCompanyId(session.user.id))
   if (!companyId) redirect('/dashboard')
   await requireAnyPermission(companyId, ['invoices.view', 'invoices.create'])
+  const { permissions } = await getMembershipPermissions(companyId)
+  const canUpload = permissions.includes('invoices.create')
   const rows = await listInvoicesAction()
 
   return (
@@ -23,14 +25,22 @@ export default async function InvoicesPage() {
           <h1>Invoice Center</h1>
           <p>Upload invoices for AI extraction or enter them manually.</p>
         </div>
-        <Link href="/invoices/new">
-          <Button variant="secondary">Manual invoice</Button>
-        </Link>
+        {canUpload ? (
+          <Link href="/invoices/new">
+            <Button variant="secondary">Manual invoice</Button>
+          </Link>
+        ) : null}
       </div>
 
-      <div style={{ marginBottom: 18 }}>
-        <InvoiceUpload />
-      </div>
+      {canUpload ? (
+        <div style={{ marginBottom: 18 }}>
+          <InvoiceUpload />
+        </div>
+      ) : (
+        <p className="muted" style={{ marginBottom: 18 }}>
+          Your role can view invoices but cannot upload. Ask an admin for upload access.
+        </p>
+      )}
 
       <div className="panel">
         <div className="panel-header">

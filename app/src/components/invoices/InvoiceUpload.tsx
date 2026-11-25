@@ -4,6 +4,33 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/Button'
 
+function friendlyUploadError(code: string | undefined, status: number) {
+  switch (code) {
+    case 'FORBIDDEN':
+      return 'Your role cannot upload invoices. Ask an admin for invoices.create permission.'
+    case 'UNAUTHORIZED':
+      return 'Your session expired. Sign in again and retry.'
+    case 'NO_COMPANY':
+      return 'No active organization. Switch company or finish onboarding.'
+    case 'COMPANY_SUSPENDED':
+      return 'This organization is suspended. Contact support.'
+    case 'INVOICE_QUOTA_EXCEEDED':
+      return 'Monthly invoice quota reached. Upgrade the plan or wait until next month.'
+    case 'INVALID_FILE_TYPE':
+      return 'Use a PDF, JPG, or PNG file.'
+    case 'FILE_TOO_LARGE':
+      return 'File is too large (max 15 MB). Try a smaller PDF or image.'
+    case 'file required':
+      return 'Choose a file before uploading.'
+    default:
+      if (status === 413) return 'File is too large for the server. Try under 4 MB.'
+      if (code?.startsWith('BLOB_UPLOAD_FAILED')) {
+        return 'Cloud storage rejected the file. Try again or contact support.'
+      }
+      return code || 'Upload failed'
+  }
+}
+
 export function InvoiceUpload() {
   const router = useRouter()
   const [busy, setBusy] = useState(false)
@@ -13,13 +40,29 @@ export function InvoiceUpload() {
     e.preventDefault()
     const form = e.currentTarget
     const fd = new FormData(form)
+    const file = fd.get('file')
+    if (file instanceof File && file.size > 4.5 * 1024 * 1024) {
+      setMessage(
+        'This file is over 4.5 MB and may fail on the hosted server. Compress it or use a smaller scan.',
+      )
+    }
     setBusy(true)
     setMessage(null)
     try {
       const res = await fetch('/api/v1/invoices/upload', { method: 'POST', body: fd })
-      const json = await res.json()
+      let json: { error?: string; invoiceId?: string } = {}
+      try {
+        json = await res.json()
+      } catch {
+        setMessage(
+          res.status === 413
+            ? 'File is too large for the server. Try under 4 MB.'
+            : `Upload failed (HTTP ${res.status}).`,
+        )
+        return
+      }
       if (!res.ok) {
-        setMessage(json.error || 'Upload failed')
+        setMessage(friendlyUploadError(json.error, res.status))
         return
       }
       setMessage('Upload queued for AI processing')
@@ -27,7 +70,7 @@ export function InvoiceUpload() {
       router.push(`/invoices/${json.invoiceId}/review`)
       router.refresh()
     } catch {
-      setMessage('Upload failed')
+      setMessage('Upload failed. Check your connection and try again.')
     } finally {
       setBusy(false)
     }
@@ -39,12 +82,24 @@ export function InvoiceUpload() {
         <h3>Upload invoice</h3>
       </div>
       <div className="panel-body" style={{ display: 'grid', gap: 12 }}>
-        <p className="muted">PDF, JPG, or PNG. AI extracts fields for your review.</p>
-        <input type="file" name="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/*" required />
+        <p className="muted">
+          PDF, JPG, or PNG. Prefer files under 4 MB on production. AI extracts fields for your
+          review.
+        </p>
+        <input
+          type="file"
+          name="file"
+          accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+          required
+        />
         <Button type="submit" disabled={busy}>
           {busy ? 'Uploading…' : 'Upload & process'}
         </Button>
-        {message ? <p className="muted">{message}</p> : null}
+        {message ? (
+          <p className="dx-login__error" style={{ margin: 0 }}>
+            {message}
+          </p>
+        ) : null}
       </div>
     </form>
   )

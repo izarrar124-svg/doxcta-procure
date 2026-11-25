@@ -15,6 +15,7 @@ import { processInvoiceJob } from '@/server/ai/process-invoice'
 import { writeAudit } from '@/server/audit'
 
 export const runtime = 'nodejs'
+export const maxDuration = 60
 
 export async function POST(req: Request) {
   try {
@@ -22,7 +23,15 @@ export async function POST(req: Request) {
     await requirePermission(companyId, 'invoices.create')
     await assertInvoiceQuota(companyId)
 
-    const form = await req.formData()
+    let form: FormData
+    try {
+      form = await req.formData()
+    } catch {
+      return Response.json(
+        { error: 'FILE_TOO_LARGE' },
+        { status: 413 },
+      )
+    }
     const file = form.get('file')
     if (!(file instanceof File)) {
       return Response.json({ error: 'file required' }, { status: 400 })
@@ -104,7 +113,9 @@ export async function POST(req: Request) {
         ? 403
         : message === 'INVOICE_QUOTA_EXCEEDED'
           ? 402
-          : 400
+          : message === 'FILE_TOO_LARGE'
+            ? 413
+            : 400
     return Response.json({ error: message }, { status })
   }
 }
